@@ -40,7 +40,7 @@ namespace Application
             Console.WriteLine("Left shift to boost");
             Console.WriteLine("When playing local multiplayer player two will use:");
             Console.WriteLine("Arrow keys for directions");
-            Console.WriteLine("Left control for boost.\n\n");
+            Console.WriteLine("Right control for boost.\n\n");
             Console.WriteLine("To play local multiplayer type 'local'");
             Console.WriteLine("To display this message again type 'help'");
             Console.WriteLine("To quit the game type 'quit'");
