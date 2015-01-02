@@ -160,7 +160,7 @@ namespace Tron
         {
             if (this.Alive)
             {
-                if (((int)direction - 2) % 4 == (int)this.Direction)
+                if ((int)direction % 2 == (int)this.Direction % 2)
                 {
                     // Don't change the direction if the car is going to go the way its just been
                     this.NewDirection = this.Direction;
