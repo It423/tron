@@ -1,15 +1,9 @@
 // Game.cs
 // <copyright file="Game.cs"> This code is protected under the MIT License. </copyright>
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using Tron;
 
 namespace Application
@@ -45,10 +39,6 @@ namespace Application
 
             // Set the draw method to run as much as possible
             this.Graphics.SynchronizeWithVerticalRetrace = false;
-
-            // Initialize the game
-            TronGame = new TronGame(12);
-            TronGame.InitializeGame();
         }
 
         /// <summary>
@@ -60,11 +50,6 @@ namespace Application
         /// Gets or sets the spritebatch drawing tool.
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game information.
-        /// </summary>
-        public TronGame TronGame { get; set; }
 
         /// <summary>
         /// Gets or sets the current keyboard state.
@@ -108,22 +93,84 @@ namespace Application
                 this.Exit();
             }
 
-            TronGame.Update();
+            GameData.Tron.Update();
 
             this.UpdateInputs();
 
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Run commands from keyboard inputs.
+        /// </summary>
         protected void UpdateInputs()
         {
             // Get the new keyboard state
             KeyboardState newKeyboard = Keyboard.GetState();
 
-            // TODO: Register keyboard inputs
+            if (this.WasKeyPressed(newKeyboard, Keys.W))
+            {
+                GameData.ChangeDirection(Direction.Up, 0);
+            }
 
+            if (this.WasKeyPressed(newKeyboard, Keys.A))
+            {
+                GameData.ChangeDirection(Direction.Left, 0);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.S))
+            {
+                GameData.ChangeDirection(Direction.Down, 0);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.D))
+            {
+                GameData.ChangeDirection(Direction.Right, 0);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.LeftShift))
+            {
+                GameData.Boost(0);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.Up))
+            {
+                GameData.ChangeDirection(Direction.Up, 1);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.Left))
+            {
+                GameData.ChangeDirection(Direction.Left, 1);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.Down))
+            {
+                GameData.ChangeDirection(Direction.Down, 1);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.Right))
+            {
+                GameData.ChangeDirection(Direction.Right, 1);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.Enter))
+            {
+                GameData.Boost(0);
+            }
+          
             // Store the new keyboard
             this.CurrentKeyboard = newKeyboard;
+        }
+
+        /// <summary>
+        /// Checks if a key was pressed this frame.
+        /// </summary>
+        /// <param name="newKeyboard"> The new keyboard state. </param>
+        /// <param name="key"> The key to check. </param>
+        /// <returns> Whether the key was recently pressed. </returns>
+        protected bool WasKeyPressed(KeyboardState newKeyboard, Keys key)
+        {
+            return !this.CurrentKeyboard.IsKeyDown(key) && newKeyboard.IsKeyDown(key);
         }
 
         /// <summary>
@@ -134,7 +181,7 @@ namespace Application
         {
             GraphicsDevice.Clear(Color.Black);
 
-            TronGame.Draw(SpriteBatch);
+            GameData.Tron.Draw(SpriteBatch);
 
             base.Draw(gameTime);
         }
