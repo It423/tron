@@ -1,10 +1,13 @@
-﻿using System;
-// GameData.cs
+﻿// GameData.cs
 // <copyright file="GameData.cs"> This code is protected under the MIT License. </copyright>
+using System;
 using Tron;
 
 namespace Application
 {
+    /// <summary>
+    /// A class containing all game data and method for input handling.
+    /// </summary>
     public static class GameData
     {
         /// <summary>
