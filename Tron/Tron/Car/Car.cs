@@ -94,17 +94,33 @@ namespace Tron
         /// <summary>
         /// Moves the car.
         /// </summary>
+        /// <param name="grid"> The grid cars move in. </param>
         /// <param name="firstMove"> Whether this is the first time running the method when it is acting recursively. </param>
-        public void Move(bool firstMove = true)
+        public void Move(CellValues[][] grid, bool firstMove = true)
         {
             if (this.Alive)
             {
-                // TODO: Implement move method
+                // Check if the car has crashed before movement
+                if (this.Crashed(grid))
+                {
+                    this.Alive = false;
+                    return;
+                }
+
+                // Move the car now we know it hasn't already crashed
+                this.Move();
+
+                // Check collision again
+                if (this.Crashed(grid))
+                {
+                    this.Alive = false;
+                    return;
+                }
 
                 // Move twice if boost is active
                 if (this.IsBoosting && firstMove)
                 {
-                    this.Move(false);
+                    this.Move(grid, false);
 
                     // Check if boost time is up
                     this.BoostTimeRemeaning--;
@@ -113,6 +129,23 @@ namespace Tron
                         this.IsBoosting = false;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks if the car has crashed.
+        /// </summary>
+        /// <param name="grid"> The grid cars move in. </param>
+        /// <returns> Whether the car has crashed. </returns>
+        public bool Crashed(CellValues[][] grid)
+        {
+            if (grid[this.X][this.Y] != CellValues.None)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -146,6 +179,29 @@ namespace Tron
                 this.IsBoosting = true;
                 this.BoostsRemeaning--;
                 this.BoostTimeRemeaning = 15;
+            }
+        }
+
+        /// <summary>
+        /// Move the car.
+        /// </summary>
+        protected void Move()
+        {
+            if (this.Direction == Tron.Direction.Up)
+            {
+                this.Y--;
+            }
+            else if (this.Direction == Tron.Direction.Right)
+            {
+                this.X++;
+            }
+            else if (this.Direction == Tron.Direction.Down)
+            {
+                this.Y++;
+            }
+            else if (this.Direction == Tron.Direction.Left)
+            {
+                this.X--;
             }
         }
     }
