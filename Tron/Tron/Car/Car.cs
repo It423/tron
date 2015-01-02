@@ -177,7 +177,7 @@ namespace Tron
         /// </summary>
         public void Boost()
         {
-            if (this.BoostsRemeaning > 0 && this.Alive)
+            if (this.BoostsRemeaning > 0 && this.BoostTimeRemeaning <= 0 && this.Alive)
             {
                 this.IsBoosting = true;
                 this.BoostsRemeaning--;
