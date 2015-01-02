@@ -114,9 +114,6 @@ namespace Tron
                     this.Alive = false;
                 }
 
-                // Tell the grid where the car is now
-                grid[this.X][this.Y] |= CellValues.Car;
-
                 // Move twice if boost is active
                 if (this.Alive && this.IsBoosting && firstMove)
                 {
@@ -139,7 +136,7 @@ namespace Tron
         /// <returns> Whether the car has crashed. </returns>
         public bool Crashed(CellValues[][] grid)
         {
-            if (this.X < 0 || this.X > grid.Length || this.Y < 0 || this.Y > grid[0].Length)
+            if (this.X < 0 || this.X >= grid.Length || this.Y < 0 || this.Y >= grid[0].Length)
             {
                 // If the car is off the grid
                 return true;
