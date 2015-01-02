@@ -107,18 +107,23 @@ namespace Tron
                     return;
                 }
 
+                // Tell the grid the car in the this position before we move
+                grid[this.X][this.Y] = this.Colour;
+
                 // Move the car now we know it hasn't already crashed
-                this.Move();
+                this.Move();                
 
                 // Check collision again
                 if (this.Crashed(grid))
                 {
                     this.Alive = false;
-                    return;
                 }
 
+                // Tell the grid where the car is now
+                grid[this.X][this.Y] |= CellValues.Car | this.Colour;
+
                 // Move twice if boost is active
-                if (this.IsBoosting && firstMove)
+                if (this.Alive && this.IsBoosting && firstMove)
                 {
                     this.Move(grid, false);
 
