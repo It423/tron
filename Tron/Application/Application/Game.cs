@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Tron;
 
 namespace Application
 {
@@ -45,8 +46,6 @@ namespace Application
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -59,16 +58,13 @@ namespace Application
             // Create a new SpriteBatch, which can be used to draw textures.
             this.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
+            // Load images
+            Drawing.CarTexture = new List<Texture2D>(4);
+            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Up"));
+            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Right"));
+            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Down"));
+            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Left"));
+            Drawing.CellTexture = this.Content.Load<Texture2D>("Cell");
         }
 
         /// <summary>
@@ -84,8 +80,6 @@ namespace Application
                 this.Exit();
             }
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -96,8 +90,6 @@ namespace Application
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
