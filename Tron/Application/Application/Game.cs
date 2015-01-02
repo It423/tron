@@ -153,7 +153,7 @@ namespace Application
                 GameData.ChangeDirection(Direction.Right, 1);
             }
 
-            if (this.WasKeyPressed(newKeyboard, Keys.Enter))
+            if (this.WasKeyPressed(newKeyboard, Keys.LeftControl))
             {
                 GameData.Boost(1);
             }
