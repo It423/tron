@@ -181,7 +181,7 @@ namespace Tron
             {
                 this.IsBoosting = true;
                 this.BoostsRemeaning--;
-                this.BoostTimeRemeaning = 15;
+                this.BoostTimeRemeaning = 50;
             }
         }
 
@@ -190,6 +190,10 @@ namespace Tron
         /// </summary>
         protected void Move()
         {
+            // Change the direction
+            this.Direction = this.NewDirection;
+
+            // Move the car accordingly
             if (this.Direction == Tron.Direction.Up)
             {
                 this.Y--;
