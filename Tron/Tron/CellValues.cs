@@ -11,60 +11,55 @@ namespace Tron
         /// Nothing is on the cell.
         /// </summary>
         None = 0,
-
-        /// <summary>
-        /// A car is on the cell.
-        /// </summary>
-        Car = 1,
         
         /// <summary>
         /// Red is the colour of the cell.
         /// </summary>
-        Red = 2,
+        Red = 1,
 
         /// <summary>
         /// Green is the colour of the cell.
         /// </summary>
-        Green = 4,
+        Green = 2,
 
         /// <summary>
         /// Blue is the colour of the cell.
         /// </summary>
-        Blue = 8,
+        Blue = 4,
 
         /// <summary>
         /// Yellow is the colour of the cell.
         /// </summary>
-        Yellow = 16,
+        Yellow = 8,
 
         /// <summary>
         /// White is the colour of the cell.
         /// </summary>
-        White = 32,
+        White = 16,
 
         /// <summary>
         /// Black is the colour of the cell.
         /// </summary>
-        Black = 64,
+        Black = 32,
 
         /// <summary>
         /// Pink is the colour of the cell.
         /// </summary>
-        Pink = 128,
+        Pink = 64,
 
         /// <summary>
         /// Orange is the colour of the cell.
         /// </summary>
-        Orange = 256,
+        Orange = 128,
 
         /// <summary>
         /// Pink is the colour of the cell.
         /// </summary>
-        Purple = 512, 
+        Purple = 256, 
 
         /// <summary>
         /// Brown is the colour of the cell.
         /// </summary>
-        Brown = 1024
+        Brown = 512
     }
 }
