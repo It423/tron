@@ -155,7 +155,7 @@ namespace Application
 
             if (this.WasKeyPressed(newKeyboard, Keys.Enter))
             {
-                GameData.Boost(0);
+                GameData.Boost(1);
             }
           
             // Store the new keyboard
