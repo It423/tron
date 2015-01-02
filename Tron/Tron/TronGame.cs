@@ -1,9 +1,7 @@
-﻿// TronGame.cs
+﻿using Microsoft.Xna.Framework;
+// TronGame.cs
 // <copyright file="TronGame.cs"> This code is protected under the MIT License. </copyright>
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Tron
 {
@@ -60,7 +58,7 @@ namespace Tron
         /// </summary>
         public void InitializePlayers()
         {
-            // TODO: Write player initalization
+            // TODO: Write player initialization
         }
 
         /// <summary>
@@ -74,6 +72,27 @@ namespace Tron
                 CellValues[][] gridCopy = this.Grid;
                 this.Cars[i].Move(ref gridCopy);
                 this.Grid = gridCopy;
+            }
+        }
+
+        /// <summary>
+        /// Draws the grid.
+        /// </summary>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            // Draw each cell
+            for (int r = 0; r < 100; r++)
+            {
+                for (int c = 0; c < 100; c++)
+                {
+                    Drawing.DrawCell(r, c, Drawing.GetColour(this.Grid[r][c]), spriteBatch);
+                }
+            }
+
+            // Draw each car
+            foreach (Car c in this.Cars)
+            {
+                Drawing.DrawCar(c.X, c.Y, Drawing.GetColour(c.Colour), c.Direction, spriteBatch);
             }
         }
     }
