@@ -25,41 +25,51 @@ namespace Tron
         /// <summary>
         /// Blue is the colour of the cell.
         /// </summary>
-        Blue = 4,
+        Blue = 3,
 
         /// <summary>
         /// Yellow is the colour of the cell.
         /// </summary>
-        Yellow = 8,
+        Yellow = 4,
 
         /// <summary>
         /// White is the colour of the cell.
         /// </summary>
-        White = 16,
+        White = 5,
 
         /// <summary>
         /// Black is the colour of the cell.
         /// </summary>
-        Black = 32,
+        Black = 6,
 
         /// <summary>
         /// Pink is the colour of the cell.
         /// </summary>
-        Pink = 64,
+        Pink = 7,
 
         /// <summary>
         /// Orange is the colour of the cell.
         /// </summary>
-        Orange = 128,
+        Orange = 8,
 
         /// <summary>
         /// Pink is the colour of the cell.
         /// </summary>
-        Purple = 256, 
+        Purple = 9, 
 
         /// <summary>
         /// Brown is the colour of the cell.
         /// </summary>
-        Brown = 512
+        Brown = 10,
+
+        /// <summary>
+        /// Lime is the colour of the cell.
+        /// </summary>
+        Lime = 11,
+
+        /// <summary>
+        /// Grey is the colour of the cell.
+        /// </summary>
+        Grey = 12,
     }
 }
