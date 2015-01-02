@@ -3,18 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tron", "Tron\Tron.csproj", "{27CC1FF2-CA28-43C4-A155-1E7005B86DA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application\Application.csproj", "{D200F123-D7AE-43E2-868C-0FE17DDC98E1}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ApplicationContent", "Application\ApplicationContent\ApplicationContent.contentproj", "{CE5C6EC9-1BD0-47FE-8133-B1FF401DC738}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{27CC1FF2-CA28-43C4-A155-1E7005B86DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27CC1FF2-CA28-43C4-A155-1E7005B86DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27CC1FF2-CA28-43C4-A155-1E7005B86DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27CC1FF2-CA28-43C4-A155-1E7005B86DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D200F123-D7AE-43E2-868C-0FE17DDC98E1}.Debug|x86.ActiveCfg = Debug|x86
+		{D200F123-D7AE-43E2-868C-0FE17DDC98E1}.Debug|x86.Build.0 = Debug|x86
+		{D200F123-D7AE-43E2-868C-0FE17DDC98E1}.Release|x86.ActiveCfg = Release|x86
+		{D200F123-D7AE-43E2-868C-0FE17DDC98E1}.Release|x86.Build.0 = Release|x86
+		{CE5C6EC9-1BD0-47FE-8133-B1FF401DC738}.Debug|x86.ActiveCfg = Debug|x86
+		{CE5C6EC9-1BD0-47FE-8133-B1FF401DC738}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
