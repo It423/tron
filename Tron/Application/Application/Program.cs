@@ -17,6 +17,7 @@ namespace Application
         /// <param name="args"> Any arguments/commands that the program is run/compiled with. </param>
         public static void Main(string[] args)
         {
+            Console.Title = "Tron";
             Help();
             GetCommand();
         }
