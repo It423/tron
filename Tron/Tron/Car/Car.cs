@@ -1,10 +1,5 @@
 ﻿// Car.cs
 // <copyright file="Car.cs"> This code is protected under the MIT License. </copyright>
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Tron
 {
     /// <summary>
@@ -96,7 +91,7 @@ namespace Tron
         /// </summary>
         /// <param name="grid"> The grid cars move in. </param>
         /// <param name="firstMove"> Whether this is the first time running the method when it is acting recursively. </param>
-        public void Move(CellValues[][] grid, bool firstMove = true)
+        public void Move(ref CellValues[][] grid, bool firstMove = true)
         {
             if (this.Alive)
             {
@@ -120,12 +115,12 @@ namespace Tron
                 }
 
                 // Tell the grid where the car is now
-                grid[this.X][this.Y] |= CellValues.Car | this.Colour;
+                grid[this.X][this.Y] |= CellValues.Car;
 
                 // Move twice if boost is active
                 if (this.Alive && this.IsBoosting && firstMove)
                 {
-                    this.Move(grid, false);
+                    this.Move(ref grid, false);
 
                     // Check if boost time is up
                     this.BoostTimeRemeaning--;
@@ -144,8 +139,14 @@ namespace Tron
         /// <returns> Whether the car has crashed. </returns>
         public bool Crashed(CellValues[][] grid)
         {
-            if (grid[this.X][this.Y] != CellValues.None)
+            if (this.X < 0 || this.X > grid.Length || this.Y < 0 || this.Y > grid[0].Length)
             {
+                // If the car is off the grid
+                return true;
+            }
+            else if (grid[this.X][this.Y] != CellValues.None)
+            {
+                // If the car has hit a wall
                 return true;
             }
             else
