@@ -26,6 +26,29 @@ namespace Application
         {
             this.Graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
+
+            // Set the screen size
+            this.Graphics.PreferredBackBufferWidth = TronGame.GridWidth * 3;
+            this.Graphics.PreferredBackBufferHeight = TronGame.GridHeight * 3;
+
+            // Set window title
+            this.Window.Title = "Tron";
+
+            // Show the mouse
+            this.IsMouseVisible = true;
+
+            // Get the current keyboard
+            this.CurrentKeyboard = Keyboard.GetState();
+
+            // Set the update to run 10 times a second
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1f / 50f);
+
+            // Set the draw method to run as much as possible
+            this.Graphics.SynchronizeWithVerticalRetrace = false;
+
+            // Initialize the game
+            TronGame = new TronGame(12);
+            TronGame.InitializeGame();
         }
 
         /// <summary>
@@ -37,6 +60,16 @@ namespace Application
         /// Gets or sets the spritebatch drawing tool.
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the game information.
+        /// </summary>
+        public TronGame TronGame { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current keyboard state.
+        /// </summary>
+        public KeyboardState CurrentKeyboard { get; set; }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -58,12 +91,7 @@ namespace Application
             // Create a new SpriteBatch, which can be used to draw textures.
             this.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load images
-            Drawing.CarTexture = new List<Texture2D>(4);
-            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Up"));
-            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Right"));
-            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Down"));
-            Drawing.CarTexture.Add(this.Content.Load<Texture2D>("Car-Left"));
+            // Load the cell texture
             Drawing.CellTexture = this.Content.Load<Texture2D>("Cell");
         }
 
@@ -80,7 +108,22 @@ namespace Application
                 this.Exit();
             }
 
+            TronGame.Update();
+
+            this.UpdateInputs();
+
             base.Update(gameTime);
+        }
+
+        protected void UpdateInputs()
+        {
+            // Get the new keyboard state
+            KeyboardState newKeyboard = Keyboard.GetState();
+
+            // TODO: Register keyboard inputs
+
+            // Store the new keyboard
+            this.CurrentKeyboard = newKeyboard;
         }
 
         /// <summary>
@@ -89,7 +132,9 @@ namespace Application
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+
+            TronGame.Draw(SpriteBatch);
 
             base.Draw(gameTime);
         }
