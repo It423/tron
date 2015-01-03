@@ -30,7 +30,7 @@ namespace Application
             Console.WriteLine("Welcome to tron!\n");
             Console.WriteLine("How to play:");
             Console.WriteLine("The aim of the game is to drive your car without crashing.");
-            Console.WriteLine("While driving you leave a train of which will smash your car if driven into.");
+            Console.WriteLine("While driving you leave a trail of which will smash cars if driven into.");
             Console.WriteLine("Be the last car driving!\n");
             Console.WriteLine("Controls:");
             Console.WriteLine("W to go up");
