@@ -44,6 +44,10 @@ namespace Tron
             // Initalize other properties
             this.RoundFinished = false;
             this.PointsToWin = pointsToWin;
+            this.TimerActive = true;
+            this.TimeTillAction = 5;
+            this.Action = "Round begins";
+            this.Timer = new Timer(1000);
         }
 
         /// <summary>
@@ -75,6 +79,26 @@ namespace Tron
         /// Gets or sets a value indicating whether the game has been won.
         /// </summary>
         public bool GameWon { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the timer is active.
+        /// </summary>
+        public bool TimerActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets how many seconds till an action takes place.
+        /// </summary>
+        public int TimeTillAction { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string saying what the action is.
+        /// </summary>
+        public string Action { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timer.
+        /// </summary>
+        public Timer Timer { get; set; }
 
         /// <summary>
         /// Start the game.
@@ -116,9 +140,25 @@ namespace Tron
         }
 
         /// <summary>
+        /// Resets the game.
+        /// </summary>
+        /// <param name="resetScore"> Whether the score needs to be reset. </param>
+        public void ResetGame(bool resetScore)
+        {
+            // Reset the grid then players
+            this.InitializeGrid();
+            this.ResetPlayers(resetScore);
+
+            // Reset game won and round finished variables
+            this.GameWon = false;
+            this.RoundFinished = false;
+        }
+
+        /// <summary>
         /// Resets the players.
         /// </summary>
-        public void ResetPlayers()
+        /// <param name="resetScore"> Whether the score needs to be reset. </param>
+        public void ResetPlayers(bool resetScore)
         {
             // Reset players in the game
             List<int> nullPlayerIndexes = new List<int>();
@@ -133,6 +173,12 @@ namespace Tron
                 {
                     this.Cars[i].Reset(SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i]);
                     spawnedPlayers++;
+
+                    // Reset the score if its is required
+                    if (resetScore)
+                    {
+                        this.Cars[i].Victories = 0;
+                    }
                 }
             }
 
@@ -249,7 +295,7 @@ namespace Tron
             }
             else
             {
-                // Else draw the victory message if the round has been won
+                // Draw the victory message if the round has been won
                 // Get the winning car
                 Car winner = null;
                 try
