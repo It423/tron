@@ -1,11 +1,11 @@
 ﻿// TronGame.cs
 // <copyright file="TronGame.cs"> This code is protected under the MIT License. </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
 using Tron.Exceptions;
-using System;
 
 namespace Tron
 {
@@ -28,7 +28,8 @@ namespace Tron
         /// Initializes a new instance of the <see cref="TronGame" /> class.
         /// </summary>
         /// <param name="players"> How many players will be in the game. </param>
-        public TronGame(int players)
+        /// <param name="pointsToWin"> How many points are required to win the game. </param>
+        public TronGame(int players, int pointsToWin)
         {
             // Initalize the grid
             this.InitializeGrid();
@@ -41,7 +42,8 @@ namespace Tron
             }
 
             // Initalize other properties
-            RoundFinished = false;
+            this.RoundFinished = false;
+            this.PointsToWin = pointsToWin;
         }
 
         /// <summary>
@@ -63,6 +65,11 @@ namespace Tron
         /// Gets or sets a value indicating whether the round has finished.
         /// </summary>
         public bool RoundFinished { get; set; }
+
+        /// <summary>
+        /// Gets or sets how many wins are required to win the game.
+        /// </summary>
+        public int PointsToWin { get; set; }
 
         /// <summary>
         /// Start the game.
@@ -135,7 +142,6 @@ namespace Tron
             {
                 this.Cars.Add(new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i + 1));
             }
-            
         }
 
         /// <summary>
@@ -156,6 +162,7 @@ namespace Tron
         /// <summary>
         /// Removes a player from the game.
         /// </summary>
+        /// <param name="playerIndex"> The index of the player to remove. </param>
         public void RemovePlayer(int playerIndex)
         {
             if (this.Players > 0)
@@ -181,12 +188,6 @@ namespace Tron
                         this.Cars[i].Move(ref gridCopy);
                         this.Grid = gridCopy;
                     }
-                }
-
-                // Check if the round has finished
-                if (this.Cars.Where(c => c.Alive).Count() <= 1)
-                {
-                    this.RoundFinished = true;
                 }
             }
         }
@@ -220,22 +221,38 @@ namespace Tron
             // Draw the border
             Drawing.DrawBorder(spriteBatch);
 
-            // Draw the victory message if the round has been won
-            if (this.RoundFinished)
+
+            if (!this.RoundFinished)
             {
+                // Check if the round has finished
+                List<Car> aliveCars = this.Cars.Where(c => c.Alive).ToList();
+                if (aliveCars.Count <= 1)
+                {
+                    this.RoundFinished = true;
+
+                    // Add one to the car's score if it won
+                    if (aliveCars.Count == 1)
+                    {
+                        this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories++;
+                    }
+                }
+            }
+            else
+            {
+                // Else draw the victory message if the round has been won
                 // Get the winning car
                 Car winner = null;
                 try
                 {
                     winner = this.Cars.Where(c => c.Alive).ToList()[0];
                 }
-                catch (ArgumentOutOfRangeException e)
+                catch (ArgumentOutOfRangeException)
                 {
                     // Catch the exception but leave the winner as null if it was a tie
                 }
 
                 // Draw the victory message
-                Drawing.DrawVictoryMessage(winner, spriteBatch);
+                Drawing.DrawVictoryMessage(winner, this.PointsToWin, spriteBatch);
             }
 
             spriteBatch.End();

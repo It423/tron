@@ -83,7 +83,7 @@ namespace Application
         {
             // Setup the game data
             GameData.LocalTwoPlayer = true;
-            GameData.Tron = new TronGame(2);
+            GameData.Tron = new TronGame(2, 3);
             GameData.Tron.InitializeGame();
 
             // Start the game
