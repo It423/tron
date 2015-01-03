@@ -36,7 +36,7 @@ namespace Application
             // Change the id of the player being redirected if not local two player
             if (!LocalTwoPlayer)
             {
-                // If the player key set is that of player two don't do anything
+                // If the player key set is not that of player one don't do anything
                 if (player != 0)
                 {
                     return;
@@ -57,7 +57,7 @@ namespace Application
             // Change the id of the player being boosted if not local two player
             if (!LocalTwoPlayer)
             {
-                // If the player key set is that of player two don't do anything
+                // If the player key set is not that of player one don't do anything
                 if (player != 0)
                 {
                     return;
