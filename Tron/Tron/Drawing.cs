@@ -1,9 +1,7 @@
 ﻿// Drawing.cs
 // <copyright file="Drawing.cs"> This code is protected under the MIT License. </copyright>
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

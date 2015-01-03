@@ -1,7 +1,9 @@
 ﻿// TronGame.cs
 // <copyright file="TronGame.cs"> This code is protected under the MIT License. </copyright>
 using System.Collections.Generic;
+using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
+using Tron.Exceptions;
 
 namespace Tron
 {
@@ -29,7 +31,12 @@ namespace Tron
             // Initalize the grid
             this.InitializeGrid();
 
-            this.Players = players;
+            // Add the players
+            this.Players = 0;
+            for (int i = 0; i < players; i++)
+            {
+                this.AddPlayer();
+            }
         }
 
         /// <summary>
@@ -87,16 +94,46 @@ namespace Tron
         }
 
         /// <summary>
+        /// Adds a player to the game.
+        /// </summary>
+        public void AddPlayer()
+        {
+            if (this.Players < 12)
+            {
+                this.Players++;
+            }
+            else
+            {
+                throw new TooManyPlayersException();
+            }
+        }
+
+        /// <summary>
+        /// Removes a player from the game.
+        /// </summary>
+        public void RemovePlayer(int playerIndex)
+        {
+            if (this.Players > 0)
+            {
+                this.Players--;
+                this.Cars[playerIndex] = null;
+            }
+        }
+
+        /// <summary>
         /// Updates the game.
         /// </summary>
         public void Update()
         {
             for (int i = 0; i < this.Cars.Count; i++)
             {
-                // Update the cars
-                CellValues[][] gridCopy = this.Grid;
-                this.Cars[i].Move(ref gridCopy);
-                this.Grid = gridCopy;
+                // Update the cars]
+                if (this.Cars[i] != null)
+                {
+                    CellValues[][] gridCopy = this.Grid;
+                    this.Cars[i].Move(ref gridCopy);
+                    this.Grid = gridCopy;
+                }
             }
         }
 
@@ -120,7 +157,10 @@ namespace Tron
             // Draw each car
             foreach (Car c in this.Cars)
             {
-                Drawing.DrawCell(c.X, c.Y, Drawing.GetColour(c.Colour), spriteBatch);
+                if (c != null)
+                {
+                    Drawing.DrawCell(c.X, c.Y, Drawing.GetColour(c.Colour), spriteBatch);
+                }
             }
 
             // Draw the border
