@@ -22,8 +22,8 @@ namespace Application
             this.Content.RootDirectory = "Content";
 
             // Set the screen size
-            this.Graphics.PreferredBackBufferWidth = TronGame.GridWidth * 3;
-            this.Graphics.PreferredBackBufferHeight = TronGame.GridHeight * 3;
+            this.Graphics.PreferredBackBufferWidth = TronGame.GridWidth * 2;
+            this.Graphics.PreferredBackBufferHeight = TronGame.GridHeight * 2 + 100;
 
             // Set window title
             this.Window.Title = "Tron";
@@ -78,6 +78,10 @@ namespace Application
 
             // Load the content
             Drawing.CellTexture = this.Content.Load<Texture2D>("Cell");
+            Drawing.BoostTexture = this.Content.Load<Texture2D>("Boost-Icon");
+            Drawing.DeadFont = this.Content.Load<SpriteFont>("Dead-Font");
+            Drawing.HUDFont = this.Content.Load<SpriteFont>("HUD-Data-Font");
+            Drawing.WinFont = this.Content.Load<SpriteFont>("Victory-Message-Font");
         }
 
         /// <summary>
@@ -179,9 +183,10 @@ namespace Application
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Drawing.GetColour(CellValues.None));
 
             GameData.Tron.Draw(SpriteBatch);
+            GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);
         }
