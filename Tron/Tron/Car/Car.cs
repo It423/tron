@@ -74,7 +74,7 @@ namespace Tron
         /// <summary>
         /// Gets or sets the amount of victories for this car.
         /// </summary>
-        public int Victories { get; protected set; }
+        public int Victories { get; set; }
 
         /// <summary>
         /// Gets or sets how much time the car has left in boost.
