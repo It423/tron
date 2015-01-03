@@ -94,6 +94,41 @@ namespace Tron
         }
 
         /// <summary>
+        /// Resets the players.
+        /// </summary>
+        public void ResetPlayers()
+        {
+            // Reset players in the game
+            List<int> nullPlayerIndexes = new List<int>();
+            int spawnedPlayers = 0;
+            for (int i = 0; i < this.Cars.Count; i++)
+            {
+                if (this.Cars[i] == null)
+                {
+                    nullPlayerIndexes.Add(i);
+                }
+                else
+                {
+                    this.Cars[i].Reset(SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i]);
+                    spawnedPlayers++;
+                }
+            }
+
+            // Add new players into the game if need be using null player slots
+            for (int i = 0; this.Players - spawnedPlayers != 0 && i < nullPlayerIndexes.Count; i++, spawnedPlayers++)
+            {
+                this.Cars[nullPlayerIndexes[i]] = new Car(nullPlayerIndexes[i], SpawnLists.XPositions[nullPlayerIndexes[i]], SpawnLists.YPositions[nullPlayerIndexes[i]], SpawnLists.Directions[nullPlayerIndexes[i]], (CellValues)nullPlayerIndexes[i] + 1);
+            }
+
+            // Add new players into the game using unused player slots
+            for (int i = this.Cars.Count; this.Players - spawnedPlayers != 0; i++, spawnedPlayers++)
+            {
+                this.Cars.Add(new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i + 1));
+            }
+            
+        }
+
+        /// <summary>
         /// Adds a player to the game.
         /// </summary>
         public void AddPlayer()
