@@ -79,13 +79,15 @@ namespace Application
 
             if (LocalTwoPlayer)
             {
+                // Draw player one and player two's HUD
                 Drawing.DrawHUD(100, Tron.Cars[0], spriteBatch);
                 Drawing.DrawHUD(700, Tron.Cars[1], spriteBatch);
             }
             else
             {
+                // Draw the player's HUD and the leaderboard
                 Drawing.DrawHUD(100, Tron.Cars[OnlinePlayerId], spriteBatch);
-                Drawing.DrawLeaderboard(500, Tron.Cars, spriteBatch);
+                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(Tron.Cars.Count - 1) / 4))), Tron.Cars, spriteBatch);
             }
 
             spriteBatch.End();
