@@ -87,6 +87,19 @@ namespace Tron
         protected Direction NewDirection { get; set; }
 
         /// <summary>
+        /// Resets the players position.
+        /// </summary>
+        /// <param name="x"> The new x position. </param>
+        /// <param name="y"> The new y position. </param>
+        /// <param name="direction"> The new direction. </param>
+        public void Reset(int x, int y, Direction direction)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Direction = direction;
+        }
+
+        /// <summary>
         /// Moves the car.
         /// </summary>
         /// <param name="grid"> The grid cars move in. </param>
