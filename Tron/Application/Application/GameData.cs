@@ -12,6 +12,11 @@ namespace Application
     public static class GameData
     {
         /// <summary>
+        /// The list of x positions for the game HUD.
+        /// </summary>
+        public static readonly int[] LocalHUDXPos = { 100, (TronGame.GridWidth * 2) - 280, TronGame.GridWidth - 90 };
+        
+        /// <summary>
         /// Gets or sets the game information.
         /// </summary>
         public static TronGame Tron { get; set; }
@@ -19,7 +24,12 @@ namespace Application
         /// <summary>
         /// Gets or sets a value indicating whether the current game is a local multiplayer one.
         /// </summary>
-        public static bool LocalTwoPlayer { get; set; }
+        public static bool LocalMultiPlayer { get; set; }
+
+        /// <summary>
+        /// Gets or sets how many local players are playing.
+        /// </summary>
+        public static int LocalPlayers { get; set; }
 
         /// <summary>
         /// Gets or sets the id number for the online player you represent.
@@ -34,7 +44,7 @@ namespace Application
         public static void ChangeDirection(Direction direction, int player)
         {
             // Change the id of the player being redirected if not local two player
-            if (!LocalTwoPlayer)
+            if (!LocalMultiPlayer)
             {
                 // If the player key set is not that of player one don't do anything
                 if (player != 0)
@@ -43,6 +53,14 @@ namespace Application
                 }
 
                 player = OnlinePlayerId;
+            }
+            else
+            {
+                // Don't do anything if the command is for a non existant player
+                if (player + 1 > LocalPlayers)
+                {
+                    return;
+                }
             }
 
             Tron.Cars[player].ChangeDirection(direction);
@@ -55,7 +73,7 @@ namespace Application
         public static void Boost(int player)
         {
             // Change the id of the player being boosted if not local two player
-            if (!LocalTwoPlayer)
+            if (!LocalMultiPlayer)
             {
                 // If the player key set is not that of player one don't do anything
                 if (player != 0)
@@ -64,6 +82,14 @@ namespace Application
                 }
 
                 player = OnlinePlayerId;
+            }
+            else
+            {
+                // Don't do anything if the command is for a non existant player
+                if (player + 1 > LocalPlayers)
+                {
+                    return;
+                }
             }
 
             Tron.Cars[player].Boost();
@@ -77,16 +103,18 @@ namespace Application
         {
             spriteBatch.Begin();
 
-            if (LocalTwoPlayer)
+            if (LocalMultiPlayer)
             {
                 // Draw player one and player two's HUD
-                Drawing.DrawHUD(100, Tron.Cars[0], spriteBatch);
-                Drawing.DrawHUD(700, Tron.Cars[1], spriteBatch);
+               for (int i = 0; i < LocalPlayers; i++)
+               {
+                   Drawing.DrawHUD(LocalHUDXPos[i], Tron.Cars[i], spriteBatch);
+               }
             }
             else
             {
                 // Draw the player's HUD and the leaderboard
-                Drawing.DrawHUD(100, Tron.Cars[OnlinePlayerId], spriteBatch);
+                Drawing.DrawHUD(LocalHUDXPos[0], Tron.Cars[OnlinePlayerId], spriteBatch);
                 Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(Tron.Cars.Count - 1) / 4))), Tron.Cars, spriteBatch);
             }
 

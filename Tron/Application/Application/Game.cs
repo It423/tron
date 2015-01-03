@@ -112,6 +112,25 @@ namespace Application
             // Get the new keyboard state
             KeyboardState newKeyboard = Keyboard.GetState();
 
+            // Player one controls
+            this.CheckPlayerOneKeys(newKeyboard);
+
+            // Player two controls
+            this.CheckPlayerTwoKeys(newKeyboard);
+
+            // Player 3 controls
+            this.CheckPlayerThreeKeys(newKeyboard);
+          
+            // Store the new keyboard
+            this.CurrentKeyboard = newKeyboard;
+        }
+
+        /// <summary>
+        /// Checks which of keys in player one's control set has been pressed.
+        /// </summary>
+        /// <param name="newKeyboard"> The new keyboard state. </param>
+        protected void CheckPlayerOneKeys(KeyboardState newKeyboard)
+        {
             if (this.WasKeyPressed(newKeyboard, Keys.W))
             {
                 GameData.ChangeDirection(Direction.Up, 0);
@@ -136,7 +155,14 @@ namespace Application
             {
                 GameData.Boost(0);
             }
+        }
 
+        /// <summary>
+        /// Checks which of keys in player two's control set has been pressed.
+        /// </summary>
+        /// <param name="newKeyboard"> The new keyboard state. </param>
+        protected void CheckPlayerTwoKeys(KeyboardState newKeyboard)
+        {
             if (this.WasKeyPressed(newKeyboard, Keys.Up))
             {
                 GameData.ChangeDirection(Direction.Up, 1);
@@ -161,9 +187,38 @@ namespace Application
             {
                 GameData.Boost(1);
             }
-          
-            // Store the new keyboard
-            this.CurrentKeyboard = newKeyboard;
+        }
+        
+        /// <summary>
+        /// Checks which of keys in player three's control set has been pressed.
+        /// </summary>
+        /// <param name="newKeyboard"> The new keyboard state. </param>
+        protected void CheckPlayerThreeKeys(KeyboardState newKeyboard)
+        {
+            if (this.WasKeyPressed(newKeyboard, Keys.I))
+            {
+                GameData.ChangeDirection(Direction.Up, 2);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.J))
+            {
+                GameData.ChangeDirection(Direction.Left, 2);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.K))
+            {
+                GameData.ChangeDirection(Direction.Down, 2);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.L))
+            {
+                GameData.ChangeDirection(Direction.Right, 2);
+            }
+
+            if (this.WasKeyPressed(newKeyboard, Keys.B))
+            {
+                GameData.Boost(2);
+            }
         }
 
         /// <summary>

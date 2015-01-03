@@ -40,7 +40,10 @@ namespace Application
             Console.WriteLine("Left shift to boost");
             Console.WriteLine("When playing local multiplayer player two will use:");
             Console.WriteLine("Arrow keys for directions");
-            Console.WriteLine("Right control for boost.\n\n");
+            Console.WriteLine("Right control for boost.");
+            Console.WriteLine("Player three will use:");
+            Console.WriteLine("I, J, K, L to change direction");
+            Console.WriteLine("B for boost.\n\n");
             Console.WriteLine("To play local multiplayer type 'local'");
             Console.WriteLine("To display this message again type 'help'");
             Console.WriteLine("To quit the game type 'quit'");
@@ -91,11 +94,24 @@ namespace Application
             else
             {
                 pointsToWin = pointsToWinNullable.Value;
-            }            
+            }
+
+            // Get amount of players wanted
+            int players;
+            int? playersNullable = GetIntFromUser("How many players do you want?", 2, 3);
+            if (playersNullable == null)
+            {
+                return;
+            }
+            else
+            {
+                players = playersNullable.Value;
+            }   
 
             // Setup the game data
-            GameData.LocalTwoPlayer = true;
-            GameData.Tron = new TronGame(2, pointsToWin);
+            GameData.LocalMultiPlayer = true;
+            GameData.LocalPlayers = players;
+            GameData.Tron = new TronGame(players, pointsToWin);
             GameData.Tron.InitializeGame();
 
             // Start the game
