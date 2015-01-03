@@ -81,13 +81,54 @@ namespace Application
         /// </summary>
         public static void StartLocalGame()
         {
+            // Get amount of wins needed
+            int pointsToWin;
+            int? pointsToWinNullable = GetIntFromUser("What is the desired round win number to win the game?", 1, 30);
+            if (pointsToWinNullable == null)
+            {
+                return;
+            }
+            else
+            {
+                pointsToWin = pointsToWinNullable.Value;
+            }            
+
             // Setup the game data
             GameData.LocalTwoPlayer = true;
-            GameData.Tron = new TronGame(2, 3);
+            GameData.Tron = new TronGame(2, pointsToWin);
             GameData.Tron.InitializeGame();
 
             // Start the game
             StartGame();
+        }
+
+        /// <summary>
+        /// Gets an integer from the user.
+        /// </summary>
+        /// <returns> The integer. </returns>
+        /// <remarks> If null is returned the user wishes to go back. </remarks>
+        public static int? GetIntFromUser(string question, int min, int max)
+        {
+            Console.WriteLine("{0}\nEnter a whole integer above {1} and below {2} or b to go back:", question, min, max);
+            while (true)
+            {
+                // Get the input
+                string inp = Console.ReadLine();
+                int parseRes;
+
+                if (inp == "b")
+                {
+                    return null;
+                }
+                else if (int.TryParse(inp, out parseRes) && parseRes >= min && parseRes <= max)
+                {
+                    return int.Parse(inp);
+                }
+                else
+                {
+                    Console.WriteLine("Enter a whole integer above {0} and below {1} or b to go back:", min, max);
+                }
+            }
         }
 
         /// <summary>
