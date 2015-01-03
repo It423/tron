@@ -20,6 +20,26 @@ namespace Tron
         public static Texture2D CellTexture { get; set; }
 
         /// <summary>
+        /// Gets or sets the texture for a boost symbol.
+        /// </summary>
+        public static Texture2D BoostTexture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font used for the win message.
+        /// </summary>
+        public static SpriteFont WinFont { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font used to tell a player they are dead.
+        /// </summary>
+        public static SpriteFont DeadFont { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font used in the HUD.
+        /// </summary>
+        public static SpriteFont HUDFont { get; set; }
+
+        /// <summary>
         /// Gets a colour from a cell value's colour.
         /// </summary>
         /// <param name="colour"> The cell value. </param>
@@ -54,13 +74,50 @@ namespace Tron
         public static void DrawCell(int row, int column, Color colour, SpriteBatch spriteBatch)
         {
             // Get position and draw
-            Vector2 pos = new Vector2(row * CellTexture.Width, column * CellTexture.Height);
+            Vector2 pos = new Vector2(row * CellTexture.Width, column * CellTexture.Height + 100);
             spriteBatch.Draw(CellTexture, pos, colour);
         }
 
-        public static void DrawHUD(SpriteBatch spriteBatch)
+        /// <summary>
+        /// Draws the border between the HUD and the game.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public static void DrawBorder(SpriteBatch spriteBatch)
         {
+            for (int i = 0; i < TronGame.GridWidth; i++)
+            {
+                Vector2 pos = new Vector2(i * CellTexture.Width, 98);
+                spriteBatch.Draw(CellTexture, pos, GetColour(CellValues.Black));
+            }
+        }
 
+        /// <summary>
+        /// Draws the information related to a car.
+        /// </summary>
+        /// <param name="xPos"> The x position to place the information. </param>
+        /// <param name="c"> The car to display its information. </param>
+        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        public static void DrawHUD(int xPos, Car c, SpriteBatch spriteBatch)
+        {
+            if (c.Alive)
+            {
+                // Display how many boosts the player has left
+                spriteBatch.DrawString(HUDFont, "Boosts:", new Vector2(xPos, 10), GetColour(c.Colour));
+
+                int x = xPos;
+                for (int i = 0; i < c.BoostsRemeaning; i++, x += BoostTexture.Width + 15)
+                {
+                    spriteBatch.Draw(BoostTexture, new Vector2(x, 45), GetColour(c.Colour));
+                }
+            }
+            else
+            {
+                // Display the player is dead
+                spriteBatch.DrawString(DeadFont, "DEAD", new Vector2(xPos, 0), GetColour(c.Colour));
+            }
+
+            // Show how many victories the player has
+            spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2(xPos + 20, 70), GetColour(c.Colour));
         }
     }
 }

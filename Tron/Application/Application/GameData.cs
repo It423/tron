@@ -1,6 +1,7 @@
 ﻿// GameData.cs
 // <copyright file="GameData.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using Microsoft.Xna.Framework.Graphics;
 using Tron;
 
 namespace Application
@@ -66,6 +67,27 @@ namespace Application
             }
 
             Tron.Cars[player].Boost();
+        }
+
+        /// <summary>
+        /// Draws the player's HUD.
+        /// </summary>
+        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        public static void DrawPlayerHUD(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+
+            if (LocalTwoPlayer)
+            {
+                Drawing.DrawHUD(100, Tron.Cars[0], spriteBatch);
+                Drawing.DrawHUD(700, Tron.Cars[1], spriteBatch);
+            }
+            else
+            {
+                Drawing.DrawHUD(100, Tron.Cars[OnlinePlayerId], spriteBatch);
+            }
+
+            spriteBatch.End();
         }
     }
 }
