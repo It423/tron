@@ -72,6 +72,11 @@ namespace Tron
         public int PointsToWin { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the game has been won.
+        /// </summary>
+        public bool GameWon { get; set; }
+
+        /// <summary>
         /// Start the game.
         /// </summary>
         public void InitializeGame()
@@ -234,6 +239,12 @@ namespace Tron
                     if (aliveCars.Count == 1)
                     {
                         this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories++;
+                        
+                        // See if the car has won the game
+                        if (this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories >= this.PointsToWin)
+                        {
+                            this.GameWon = true;
+                        }
                     }
                 }
             }
