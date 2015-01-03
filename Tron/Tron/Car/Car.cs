@@ -20,8 +20,7 @@ namespace Tron
             this.ID = id;
             this.X = x;
             this.Y = y;
-            this.Direction = direction;
-            this.NewDirection = direction;
+            this.Direction = this.NewDirection = direction;
             this.IsBoosting = false;
             this.BoostsRemeaning = 3;
             this.BoostTimeRemeaning = 0;
@@ -96,7 +95,11 @@ namespace Tron
         {
             this.X = x;
             this.Y = y;
-            this.Direction = direction;
+            this.Direction = this.NewDirection = direction;
+            this.IsBoosting = false;
+            this.BoostsRemeaning = 3;
+            this.BoostTimeRemeaning = 0;
+            this.Alive = true;
         }
 
         /// <summary>
