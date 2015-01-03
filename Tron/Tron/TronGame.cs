@@ -261,10 +261,17 @@ namespace Tron
             // Draw each cell
             for (int r = 0; r < this.Grid.Length; r++)
             {
-                for (int c = 0; c < this.Grid[r].Length; c++)
+                try
                 {
-                    Drawing.DrawCell(r, c, Drawing.GetColour(this.Grid[r][c]), spriteBatch);
+                    for (int c = 0; c < this.Grid[r].Length; c++)
+                    {
+                        Drawing.DrawCell(r, c, Drawing.GetColour(this.Grid[r][c]), spriteBatch);
+                    }
                 }
+                catch (NullReferenceException)
+                {
+                    // Avoid issues with grid being reset while game is being drawn
+                } 
             }
 
             // Draw each car
@@ -281,7 +288,7 @@ namespace Tron
 
             if (!this.RoundFinished)
             {
-                CheckRoundOver();
+                this.CheckRoundOver();
             }
             else if (this.TimerActive)
             {
