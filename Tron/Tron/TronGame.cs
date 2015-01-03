@@ -123,6 +123,9 @@ namespace Tron
                 Drawing.DrawCell(c.X, c.Y, Drawing.GetColour(c.Colour), spriteBatch);
             }
 
+            // Draw the border
+            Drawing.DrawBorder(spriteBatch);
+
             spriteBatch.End();
         }
     }
