@@ -72,7 +72,7 @@ namespace Application
         /// <summary>
         /// Draws the player's HUD.
         /// </summary>
-        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawPlayerHUD(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

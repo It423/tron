@@ -103,7 +103,7 @@ namespace Tron
         /// <summary>
         /// Draws the grid.
         /// </summary>
-        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

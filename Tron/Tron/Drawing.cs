@@ -64,6 +64,11 @@ namespace Tron
             }
         }
 
+        /// <summary>
+        /// Gets the ordinal string of a number.
+        /// </summary>
+        /// <param name="i"> The number to apply ordinal to. </param>
+        /// <returns> The ordinal string. </returns>
         public static string GetOrdinal(int i)
         {
             // Return the number if it has no ordinal
@@ -97,18 +102,18 @@ namespace Tron
         /// <param name="row"> The cell's row number. </param>
         /// <param name="column"> The cell's column number. </param>
         /// <param name="colour"> The cell's colour. </param>
-        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawCell(int row, int column, Color colour, SpriteBatch spriteBatch)
         {
             // Get position and draw
-            Vector2 pos = new Vector2(row * CellTexture.Width, column * CellTexture.Height + 100);
+            Vector2 pos = new Vector2(row * CellTexture.Width, (column * CellTexture.Height) + 100);
             spriteBatch.Draw(CellTexture, pos, colour);
         }
 
         /// <summary>
         /// Draws the border between the HUD and the game.
         /// </summary>
-        /// <param name="spriteBatch"></param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawBorder(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < TronGame.GridWidth; i++)
@@ -123,7 +128,7 @@ namespace Tron
         /// </summary>
         /// <param name="xPos"> The x position to place the information. </param>
         /// <param name="c"> The car to display its information. </param>
-        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawHUD(int xPos, Car c, SpriteBatch spriteBatch)
         {
             if (c.Alive)
@@ -152,7 +157,7 @@ namespace Tron
         /// </summary>
         /// <param name="xPos"> The x position to place the information. </param>
         /// <param name="cars"> The list of cars. </param>
-        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawLeaderboard(int xPos, List<Car> cars, SpriteBatch spriteBatch)
         {
             // Order the cars
@@ -181,7 +186,7 @@ namespace Tron
                     x += 170;
                 }
 
-                // Update the last pointage and ordinal value
+                // Update the last points and ordinal value set
                 lastPoint = cars[i].Victories;
                 lastPlace = ordinalVal;
             }

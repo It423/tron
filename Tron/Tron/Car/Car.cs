@@ -174,7 +174,7 @@ namespace Tron
             {
                 this.IsBoosting = true;
                 this.BoostsRemeaning--;
-                this.BoostTimeRemeaning = 50;
+                this.BoostTimeRemeaning = 70;
             }
         }
 

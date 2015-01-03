@@ -23,7 +23,7 @@ namespace Application
 
             // Set the screen size
             this.Graphics.PreferredBackBufferWidth = TronGame.GridWidth * 2;
-            this.Graphics.PreferredBackBufferHeight = TronGame.GridHeight * 2 + 100;
+            this.Graphics.PreferredBackBufferHeight = (TronGame.GridHeight * 2) + 100;
 
             // Set window title
             this.Window.Title = "Tron";
@@ -47,7 +47,7 @@ namespace Application
         public GraphicsDeviceManager Graphics { get; set; }
 
         /// <summary>
-        /// Gets or sets the spritebatch drawing tool.
+        /// Gets or sets the sprite batch drawing tool.
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
 
