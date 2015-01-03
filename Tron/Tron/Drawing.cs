@@ -57,5 +57,10 @@ namespace Tron
             Vector2 pos = new Vector2(row * CellTexture.Width, column * CellTexture.Height);
             spriteBatch.Draw(CellTexture, pos, colour);
         }
+
+        public static void DrawHUD(SpriteBatch spriteBatch)
+        {
+
+        }
     }
 }

@@ -10,12 +10,12 @@ namespace Tron
         /// <summary>
         /// The list of x position the car can spawn in.
         /// </summary>
-        public static readonly int[] XPositions = { 149, 151, 150, 150, 1, 0, 300, 299, 0, 1, 299, 300 };
+        public static readonly int[] XPositions = { 249, 251, 250, 250, 1, 0, 500, 499, 0, 1, 499, 500 };
 
         /// <summary>
         /// The list of y position the car can spawn in.
         /// </summary>
-        public static readonly int[] YPositions = { 100, 100, 99, 101, 0, 1, 199, 200, 199, 200, 0, 1 };
+        public static readonly int[] YPositions = { 125, 125, 124, 126, 0, 1, 249, 250, 249, 250, 0, 1 };
 
         /// <summary>
         /// The list of direction the car can spawn in.

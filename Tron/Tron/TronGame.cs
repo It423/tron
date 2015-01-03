@@ -13,12 +13,12 @@ namespace Tron
         /// <summary>
         /// The width of the grid.
         /// </summary>
-        public static readonly int GridWidth = 301;
+        public static readonly int GridWidth = 501;
 
         /// <summary>
         /// The height of the grid.
         /// </summary>
-        public static readonly int GridHeight = 201;
+        public static readonly int GridHeight = 251;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TronGame" /> class.
