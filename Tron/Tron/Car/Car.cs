@@ -158,17 +158,10 @@ namespace Tron
         /// <param name="direction"> The new direction. </param>
         public void ChangeDirection(Direction direction)
         {
-            if (this.Alive)
+            if ((int)direction % 2 != (int)this.Direction % 2)
             {
-                if ((int)direction % 2 == (int)this.Direction % 2)
-                {
-                    // Don't change the direction if the car is going to go the way its just been
-                    this.NewDirection = this.Direction;
-                }
-                else
-                {
-                    this.NewDirection = direction;
-                }
+                // Don't change the direction if the car is going to go the way its just been
+                this.NewDirection = direction;
             }
         }
 
