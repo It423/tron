@@ -130,12 +130,12 @@ namespace Tron
         public static void DrawHUD(int xPos, Car c, SpriteBatch spriteBatch)
         {
             // Get the width of the area
-            int BoostWidth = 3 * BoostTexture.Width + 30;
+            int boostWidth = (3 * BoostTexture.Width) + 30;
 
             if (c.Alive)
             {
                 // Display how many boosts the player has left
-                spriteBatch.DrawString(HUDFont, "Boosts:", new Vector2((BoostWidth - HUDFont.MeasureString("Boosts:").X) / 2 + xPos, 10), GetColour(c.Colour));
+                spriteBatch.DrawString(HUDFont, "Boosts:", new Vector2(((boostWidth - HUDFont.MeasureString("Boosts:").X) / 2) + xPos, 10), GetColour(c.Colour));
 
                 int x = xPos;
                 for (int i = 0; i < c.BoostsRemeaning; i++, x += BoostTexture.Width + 15)
@@ -146,11 +146,11 @@ namespace Tron
             else
             {
                 // Display the player is dead
-                spriteBatch.DrawString(DeadFont, "DEAD", new Vector2((BoostWidth - DeadFont.MeasureString("DEAD").X) / 2 + xPos, 0), GetColour(c.Colour));
+                spriteBatch.DrawString(DeadFont, "DEAD", new Vector2(((boostWidth - DeadFont.MeasureString("DEAD").X) / 2) + xPos, 0), GetColour(c.Colour));
             }
 
             // Show how many victories the player has
-            spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2((BoostWidth - HUDFont.MeasureString(string.Format("Victories: {0}", c.Victories)).X) / 2 + xPos, 70), GetColour(c.Colour));
+            spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2(((boostWidth - HUDFont.MeasureString(string.Format("Victories: {0}", c.Victories)).X) / 2) + xPos, 70), GetColour(c.Colour));
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Tron
         /// <param name="winner"> The winning car. </param>
         /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         /// <remarks> If the car inputted is equal to null the procedure will take the result as a tie. </remarks>
-        public static void DrawVictoryMessage(Car winner, SpriteBatch spriteBatch)
+        public static void DrawVictoryMessage(Car winner, int pointsToWin, SpriteBatch spriteBatch)
         {
             // Get the message and colour
             string message;
@@ -213,6 +213,11 @@ namespace Tron
             {
                 message = string.Format("{0} won the round!", winner.Colour.ToString());
                 colour = GetColour(winner.Colour);
+
+                if (winner.Victories >= pointsToWin)
+                {
+                    message = string.Format("{0} won the game!", winner.Colour.ToString());
+                }
             }
 
             // Get the position of the text
