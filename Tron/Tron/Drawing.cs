@@ -197,6 +197,7 @@ namespace Tron
         /// Draws a victory message for the car.
         /// </summary>
         /// <param name="winner"> The winning car. </param>
+        /// <param name="pointsToWin"> How many points are required to win the game. </param>
         /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         /// <remarks> If the car inputted is equal to null the procedure will take the result as a tie. </remarks>
         public static void DrawVictoryMessage(Car winner, int pointsToWin, SpriteBatch spriteBatch)

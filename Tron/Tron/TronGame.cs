@@ -226,7 +226,6 @@ namespace Tron
             // Draw the border
             Drawing.DrawBorder(spriteBatch);
 
-
             if (!this.RoundFinished)
             {
                 // Check if the round has finished
