@@ -189,5 +189,35 @@ namespace Tron
                 lastPlace = ordinalVal;
             }
         }
+
+        /// <summary>
+        /// Draws a victory message for the car.
+        /// </summary>
+        /// <param name="winner"> The winning car. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
+        /// <remarks> If the car inputted is equal to null the procedure will take the result as a tie. </remarks>
+        public static void DrawVictoryMessage(Car winner, SpriteBatch spriteBatch)
+        {
+            // Get the message and colour
+            string message;
+            Color colour;
+            if (winner == null)
+            {
+                message = "Tie!";
+                colour = GetColour(CellValues.White);
+            }
+            else
+            {
+                message = string.Format("{0} won the round!", winner.Colour.ToString());
+                colour = GetColour(winner.Colour);
+            }
+
+            // Get the position of the text
+            Vector2 textDimensions = WinFont.MeasureString(message);
+            Vector2 pos = new Vector2(((TronGame.GridWidth * CellTexture.Width) - textDimensions.X) / 2, ((TronGame.GridHeight * CellTexture.Height) + 100) / 2);
+
+            // Draw the message
+            spriteBatch.DrawString(WinFont, message, pos, colour);
+        }
     }
 }

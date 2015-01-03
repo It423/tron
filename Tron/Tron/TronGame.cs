@@ -1,9 +1,11 @@
 ﻿// TronGame.cs
 // <copyright file="TronGame.cs"> This code is protected under the MIT License. </copyright>
 using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
 using Tron.Exceptions;
+using System;
 
 namespace Tron
 {
@@ -37,6 +39,9 @@ namespace Tron
             {
                 this.AddPlayer();
             }
+
+            // Initalize other properties
+            RoundFinished = false;
         }
 
         /// <summary>
@@ -53,6 +58,11 @@ namespace Tron
         /// Gets or sets how many players are going to play.
         /// </summary>
         public int Players { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the round has finished.
+        /// </summary>
+        public bool RoundFinished { get; set; }
 
         /// <summary>
         /// Start the game.
@@ -160,14 +170,23 @@ namespace Tron
         /// </summary>
         public void Update()
         {
-            for (int i = 0; i < this.Cars.Count; i++)
+            if (!this.RoundFinished)
             {
-                // Update the cars]
-                if (this.Cars[i] != null)
+                for (int i = 0; i < this.Cars.Count; i++)
                 {
-                    CellValues[][] gridCopy = this.Grid;
-                    this.Cars[i].Move(ref gridCopy);
-                    this.Grid = gridCopy;
+                    // Update the cars
+                    if (this.Cars[i] != null)
+                    {
+                        CellValues[][] gridCopy = this.Grid;
+                        this.Cars[i].Move(ref gridCopy);
+                        this.Grid = gridCopy;
+                    }
+                }
+
+                // Check if the round has finished
+                if (this.Cars.Where(c => c.Alive).Count() <= 1)
+                {
+                    this.RoundFinished = true;
                 }
             }
         }
@@ -200,6 +219,24 @@ namespace Tron
 
             // Draw the border
             Drawing.DrawBorder(spriteBatch);
+
+            // Draw the victory message if the round has been won
+            if (this.RoundFinished)
+            {
+                // Get the winning car
+                Car winner = null;
+                try
+                {
+                    winner = this.Cars.Where(c => c.Alive).ToList()[0];
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    // Catch the exception but leave the winner as null if it was a tie
+                }
+
+                // Draw the victory message
+                Drawing.DrawVictoryMessage(winner, spriteBatch);
+            }
 
             spriteBatch.End();
         }
