@@ -228,5 +228,27 @@ namespace Tron
             // Draw the message
             spriteBatch.DrawString(WinFont, message, pos, colour);
         }
+
+        /// <summary>
+        /// Draws the timer.
+        /// </summary>
+        /// <param name="seconds"> How many seconds left on the timer. </param>
+        /// <param name="action"> What will happen at the end of the timer. </param>
+        /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
+        public static void DrawTimer(int seconds, string action, SpriteBatch spriteBatch)
+        {
+            // Get the message
+            string message = "Time till " + action + ":";
+            
+            // Draw the timer
+            Vector2 textDimensions = WinFont.MeasureString(message);
+            Vector2 pos = new Vector2(((TronGame.GridWidth * CellTexture.Width) - textDimensions.X) / 2, ((TronGame.GridHeight * CellTexture.Height) + 100) / 2);
+            spriteBatch.DrawString(WinFont, message, pos, GetColour(CellValues.White));
+
+            // Draw the time left
+            textDimensions = WinFont.MeasureString(seconds.ToString());
+            pos = new Vector2(((TronGame.GridWidth * CellTexture.Width) - textDimensions.X) / 2, (((TronGame.GridHeight * CellTexture.Height) + 100) / 2) + 50);
+            spriteBatch.DrawString(WinFont, seconds.ToString(), pos, GetColour(CellValues.White));
+        }
     }
 }

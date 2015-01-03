@@ -42,12 +42,19 @@ namespace Tron
             }
 
             // Initalize other properties
-            this.RoundFinished = false;
+            this.RoundFinished = true;
+            this.GameWon = true;
             this.PointsToWin = pointsToWin;
             this.TimerActive = true;
             this.TimeTillAction = 5;
-            this.Action = "Round begins";
+            this.Action = "round begins";
+
+            // Active the timer
             this.Timer = new Timer(1000);
+            this.Timer.AutoReset = true;
+            this.Timer.Elapsed += this.HandleTimer;
+            this.Timer.Enabled = true;
+            this.Timer.Start();
         }
 
         /// <summary>
@@ -274,24 +281,12 @@ namespace Tron
 
             if (!this.RoundFinished)
             {
-                // Check if the round has finished
-                List<Car> aliveCars = this.Cars.Where(c => c.Alive).ToList();
-                if (aliveCars.Count <= 1)
-                {
-                    this.RoundFinished = true;
-
-                    // Add one to the car's score if it won
-                    if (aliveCars.Count == 1)
-                    {
-                        this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories++;
-                        
-                        // See if the car has won the game
-                        if (this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories >= this.PointsToWin)
-                        {
-                            this.GameWon = true;
-                        }
-                    }
-                }
+                CheckRoundOver();
+            }
+            else if (this.TimerActive)
+            {
+                // Draw the timer if the timer is active
+                Drawing.DrawTimer(this.TimeTillAction, this.Action, spriteBatch);
             }
             else
             {
@@ -312,6 +307,76 @@ namespace Tron
             }
 
             spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Checks if the round has finished and runs code accordingly.
+        /// </summary>
+        public void CheckRoundOver()
+        {
+            // Check if the round has finished
+            List<Car> aliveCars = this.Cars.Where(c => c.Alive).ToList();
+            if (aliveCars.Count <= 1)
+            {
+                this.RoundFinished = true;
+
+                // Set the timer to display the victory message for 5 seconds
+                this.Timer.Interval = 5000;
+                this.Timer.Start();
+
+                // Add one to the car's score if it won
+                if (aliveCars.Count == 1)
+                {
+                    this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories++;
+
+                    // See if the car has won the game
+                    if (this.Cars[this.Cars.IndexOf(aliveCars[0])].Victories >= this.PointsToWin)
+                    {
+                        this.GameWon = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the timer elapsing.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        protected void HandleTimer(object sender, ElapsedEventArgs e)
+        {
+            if (this.Action == string.Empty)
+            {
+                // Restart the timer if begin told to
+                this.TimerActive = true;
+                this.TimeTillAction = 5;
+                this.Timer.Interval = 1000;
+                this.Timer.Start();
+
+                // Set the action
+                this.Action = "round begins";
+                if (this.GameWon)
+                {
+                    this.Action = "game restarts";
+                    this.TimeTillAction = 15;
+                }
+            }
+            else
+            {
+                // Restart the game if the timer reaches 0
+                if (this.TimeTillAction == 1)
+                {
+                    this.ResetGame(this.GameWon);
+
+                    // Deactivate the timer
+                    this.Action = string.Empty;
+                    this.TimerActive = false;
+                    this.Timer.Stop();
+                }
+
+                // Decrease the timer
+                this.TimeTillAction--;
+            }
         }
     }
 }
