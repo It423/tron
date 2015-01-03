@@ -247,6 +247,9 @@ namespace Tron
                         this.Grid = gridCopy;
                     }
                 }
+
+                // Check if the round has finished
+                this.CheckRoundOver();
             }
         }
 
@@ -286,16 +289,12 @@ namespace Tron
             // Draw the border
             Drawing.DrawBorder(spriteBatch);
 
-            if (!this.RoundFinished)
-            {
-                this.CheckRoundOver();
-            }
-            else if (this.TimerActive)
+            if (this.TimerActive)
             {
                 // Draw the timer if the timer is active
                 Drawing.DrawTimer(this.TimeTillAction, this.Action, spriteBatch);
             }
-            else
+            else if (this.RoundFinished)
             {
                 // Draw the victory message if the round has been won
                 // Get the winning car
