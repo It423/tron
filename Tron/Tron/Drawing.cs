@@ -64,6 +64,33 @@ namespace Tron
             }
         }
 
+        public static string GetOrdinal(int i)
+        {
+            // Return the number if it has no ordinal
+            if (i <= 0)
+            {
+                return i.ToString();
+            }
+
+            // Return 11, 12, 13 with "th"
+            switch (i % 100)
+            {
+                case 11:
+                case 12:
+                case 13:
+                    return i + "th";
+            }
+
+            // Return correctly anything else
+            switch (i % 10)
+            {
+                case 1: return i + "st";
+                case 2: return i + "nd";
+                case 3: return i + "rd";
+                default: return i + "th";
+            }
+        }
+
         /// <summary>
         /// Draws a cell.
         /// </summary>
@@ -118,6 +145,46 @@ namespace Tron
 
             // Show how many victories the player has
             spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2(xPos + 20, 70), GetColour(c.Colour));
+        }
+
+        /// <summary>
+        /// Draws the leaderboard.
+        /// </summary>
+        /// <param name="xPos"> The x position to place the information. </param>
+        /// <param name="cars"> The list of cars. </param>
+        /// <param name="spriteBatch"> The spritebatch drawing tool. </param>
+        public static void DrawLeaderboard(int xPos, List<Car> cars, SpriteBatch spriteBatch)
+        {
+            // Order the cars
+            cars = cars.OrderByDescending(c => c.Victories).ThenByDescending(c => (int)c.Colour).ToList();
+
+            // Draw the leaderbored
+            int y = 5;
+            int x = xPos;
+            int lastPoint = 0;
+            int lastPlace = 1;
+            for (int i = 0; i < cars.Count; i++, y += 23)
+            {
+                // Get the correct ordinal value
+                int ordinalVal = i + 1;
+                if (cars[i].Victories == lastPoint) 
+                {
+                    ordinalVal = lastPlace;
+                }
+
+                spriteBatch.DrawString(HUDFont, string.Format("{0} {1}: {2}", GetOrdinal(ordinalVal), cars[i].Colour, cars[i].Victories), new Vector2(x, y), GetColour(cars[i].Colour));
+                
+                // Increase the x if the y is too large
+                if (y + 30 > 100)
+                {
+                    y = -18;
+                    x += 170;
+                }
+
+                // Update the last pointage and ordinal value
+                lastPoint = cars[i].Victories;
+                lastPlace = ordinalVal;
+            }
         }
     }
 }

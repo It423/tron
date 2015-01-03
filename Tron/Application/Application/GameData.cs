@@ -85,6 +85,7 @@ namespace Application
             else
             {
                 Drawing.DrawHUD(100, Tron.Cars[OnlinePlayerId], spriteBatch);
+                Drawing.DrawLeaderboard(500, Tron.Cars, spriteBatch);
             }
 
             spriteBatch.End();
