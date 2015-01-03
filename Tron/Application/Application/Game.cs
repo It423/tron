@@ -76,7 +76,7 @@ namespace Application
             // Create a new SpriteBatch, which can be used to draw textures.
             this.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load the cell texture
+            // Load the content
             Drawing.CellTexture = this.Content.Load<Texture2D>("Cell");
         }
 
