@@ -12,5 +12,9 @@ namespace Networking
     /// </summary>
     public class Server
     {
+        /// <summary>
+        /// The port used by the server.
+        /// </summary>
+        public static readonly int Port = 22528;
     }
 }
