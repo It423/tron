@@ -12,12 +12,18 @@ namespace Application
     public static class Program
     {
         /// <summary>
+        /// Gets or sets the game application.
+        /// </summary>
+        public static Game Game { get; set; }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// <param name="args"> Any arguments/commands that the program is run/compiled with. </param>
         public static void Main(string[] args)
         {
             Console.Title = "Tron";
+            Game = new Game();
             Help();
             GetCommand();
         }
@@ -152,10 +158,7 @@ namespace Application
         /// </summary>
         public static void StartGame()
         {
-            using (Game game = new Game())
-            {
-                game.Run();
-            }
+            Game.Run();
         }
     }
 #endif
