@@ -65,6 +65,8 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Drawing.cs" />
+    <Compile Include="EventArguments\CrashedEventArgs.cs" />
+    <Compile Include="EventArguments\MovedEventArgs.cs" />
     <Compile Include="Exceptions\TooManyPlayersException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -72,6 +74,7 @@
     <Compile Include="SpawnLists.cs" />
     <Compile Include="TronGame.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
