@@ -1,5 +1,5 @@
-﻿// NetGameExtensions.cs
-// <copyright file="NetGameExtensions.cs"> This code is protected under the MIT License. </copyright>
+﻿// NetGameExtension.cs
+// <copyright file="NetGameExtension.cs"> This code is protected under the MIT License. </copyright>
 using Tron;
 
 namespace Networking.Extensions
@@ -7,7 +7,7 @@ namespace Networking.Extensions
     /// <summary>
     /// An extension class for the game containing useful tools for a networked game of tron.
     /// </summary>
-    public static class NetGameExtensions
+    public static class NetGameExtension
     {
         /// <summary>
         /// Adjusts a car in the game accordingly to a byte array.
