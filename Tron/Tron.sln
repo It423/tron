@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationContent", "Appli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tron", "Tron\Tron.csproj", "{0B6ADB78-EDAB-4A65-AE23-8A2883F3DA4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking", "Networking\Networking.csproj", "{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,16 @@ Global
 		{0B6ADB78-EDAB-4A65-AE23-8A2883F3DA4F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0B6ADB78-EDAB-4A65-AE23-8A2883F3DA4F}.Release|x86.ActiveCfg = Release|x86
 		{0B6ADB78-EDAB-4A65-AE23-8A2883F3DA4F}.Release|x86.Build.0 = Release|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Debug|x86.ActiveCfg = Debug|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Debug|x86.Build.0 = Debug|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Release|Any CPU.ActiveCfg = Release|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Release|x86.ActiveCfg = Release|x86
+		{582A6FB5-0D0E-47D4-831D-3EE3DD1A51DD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
