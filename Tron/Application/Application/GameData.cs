@@ -53,7 +53,7 @@ namespace Application
                     return;
                 }
 
-                player = OnlinePlayerId;
+                // Run online direction change
             }
             else
             {
@@ -62,9 +62,9 @@ namespace Application
                 {
                     return;
                 }
-            }
 
-            Tron.Cars[player].ChangeDirection(direction);
+                Tron.Cars[player].ChangeDirection(direction);
+            }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Application
                     return;
                 }
 
-                player = OnlinePlayerId;
+                // Run online boost
             }
             else
             {
@@ -91,9 +91,9 @@ namespace Application
                 {
                     return;
                 }
-            }
 
-            Tron.Cars[player].Boost();
+                Tron.Cars[player].Boost();
+            }
         }
 
         /// <summary>
