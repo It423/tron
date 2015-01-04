@@ -155,10 +155,6 @@ namespace Tron
             // Reset the grid then players
             this.InitializeGrid();
             this.ResetPlayers(resetScore);
-
-            // Reset game won and round finished variables
-            this.GameWon = false;
-            this.RoundFinished = false;
         }
 
         /// <summary>
@@ -366,18 +362,23 @@ namespace Tron
                     this.Action = "game restarts";
                     this.TimeTillAction = 15;
                 }
+
+                // Reset the game 
+                this.ResetGame(this.GameWon);
             }
             else
             {
-                // Restart the game if the timer reaches 0
+                // Star the game if the timer reaches 0
                 if (this.TimeTillAction == 1)
                 {
-                    this.ResetGame(this.GameWon);
-
                     // Deactivate the timer
                     this.Action = string.Empty;
                     this.TimerActive = false;
                     this.Timer.Stop();
+
+                    // Say game has begin
+                    this.GameWon = false;
+                    this.RoundFinished = false;
                 }
 
                 // Decrease the timer
