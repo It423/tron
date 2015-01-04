@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Tron;
+using Tron.CarData;
 
 namespace Application
 {

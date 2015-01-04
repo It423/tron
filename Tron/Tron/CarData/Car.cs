@@ -1,9 +1,10 @@
 ﻿// Car.cs
 // <copyright file="Car.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using Tron.CarData;
 using Tron.EventArguments;
 
-namespace Tron
+namespace Tron.CarData
 {
     /// <summary>
     /// The class that represents a car.
@@ -50,12 +51,12 @@ namespace Tron
         /// <summary>
         /// Gets or sets the x position.
         /// </summary>
-        public int X { get; protected set; }
+        public int X { get; set; }
 
         /// <summary>
         /// Gets or sets the y position.
         /// </summary>
-        public int Y { get; protected set; }
+        public int Y { get; set; }
 
         /// <summary>
         /// Gets or sets the direction the car is moving in.
@@ -219,19 +220,19 @@ namespace Tron
             this.Direction = this.NewDirection;
 
             // Move the car accordingly
-            if (this.Direction == Tron.Direction.Up)
+            if (this.Direction == Direction.Up)
             {
                 this.Y--;
             }
-            else if (this.Direction == Tron.Direction.Right)
+            else if (this.Direction == Direction.Right)
             {
                 this.X++;
             }
-            else if (this.Direction == Tron.Direction.Down)
+            else if (this.Direction == Direction.Down)
             {
                 this.Y++;
             }
-            else if (this.Direction == Tron.Direction.Left)
+            else if (this.Direction == Direction.Left)
             {
                 this.X--;
             }

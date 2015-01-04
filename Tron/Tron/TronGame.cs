@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
+using Tron.CarData;
 using Tron.Exceptions;
 
 namespace Tron

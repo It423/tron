@@ -59,9 +59,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Car\Direction.cs" />
+    <Compile Include="CarData\Direction.cs" />
     <Compile Include="CellValues.cs" />
-    <Compile Include="Car\Car.cs">
+    <Compile Include="CarData\Car.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Drawing.cs" />

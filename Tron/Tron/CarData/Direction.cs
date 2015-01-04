@@ -1,6 +1,6 @@
 ﻿// Direction.cs
 // <copyright file="Direction.cs"> This code is protected under the MIT License. </copyright>
-namespace Tron
+namespace Tron.CarData
 {
     /// <summary>
     /// An enumeration to represent the possible directions a car can travel.
