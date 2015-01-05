@@ -19,6 +19,9 @@ namespace Networking.Extensions
             // Get the index of the car
             int index = byteArray[0];
 
+            // Store the value on the grid
+            g.Grid[g.Cars[index].X][g.Cars[index].Y] = g.Cars[index].Colour;
+
             // Adjust the car 
             g.Cars[index].PosFromByteArray(byteArray);
         }
