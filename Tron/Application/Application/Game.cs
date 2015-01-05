@@ -98,7 +98,14 @@ namespace Application
                 this.Exit();
             }
 
-            TronData.Tron.Update();
+            if (GameData.LocalMultiPlayer)
+            {
+                TronData.Tron.Update();
+            }
+            else
+            {
+                TronData.Tron.CheckRoundOver();
+            }
 
             this.UpdateInputs();
 
