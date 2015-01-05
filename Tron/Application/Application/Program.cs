@@ -25,7 +25,6 @@ namespace Application
         public static void Main(string[] args)
         {
             Console.Title = "Tron";
-            Game = new Game();
             GameData.Client = new Client();
             Help();
             GetCommand();
@@ -250,7 +249,13 @@ namespace Application
         /// </summary>
         public static void StartGame()
         {
-            Game.Run();
+            using (Game = new Game())
+            {
+                Game.Run();
+            }
+
+            // Make game null so we know its not open
+            Game = null;
         }
     }
 #endif
