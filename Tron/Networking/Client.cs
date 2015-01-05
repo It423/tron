@@ -117,8 +117,8 @@ namespace Networking
                 return null;
             }
 
-            // Check if the server is full
-            if (packet[0] == 255)
+            // Check if the server is full or a bad number
+            if (packet[0] == 255 || packet[0] > 11)
             {
                 return false;
             }
@@ -131,6 +131,7 @@ namespace Networking
 
                 // Start listening for messages
                 this.ListenThread = new Thread(() => this.ListenForMessages());
+                this.ListenThread.Start();
 
                 return true;
             }
