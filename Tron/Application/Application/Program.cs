@@ -1,6 +1,9 @@
 // Program.cs
 // <copyright file="Program.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using System.Net;
+using System.Threading;
+using Networking;
 using Tron;
 
 namespace Application
@@ -24,6 +27,7 @@ namespace Application
         {
             Console.Title = "Tron";
             Game = new Game();
+            GameData.Client = new Client();
             Help();
             GetCommand();
         }
@@ -51,6 +55,7 @@ namespace Application
             Console.WriteLine("I, J, K, L to change direction");
             Console.WriteLine("B for boost.\n\n");
             Console.WriteLine("To play local multiplayer type 'local'");
+            Console.WriteLine("To play online multiplayer type 'online'");
             Console.WriteLine("To display this message again type 'help'");
             Console.WriteLine("To quit the game type 'quit'");
         }
@@ -69,6 +74,10 @@ namespace Application
                 if (inp.ToLower() == "local")
                 {
                     StartLocalGame();
+                }
+                else if (inp.ToLower() == "online")
+                {
+                    StartOnlineGame();
                 }
                 else if (inp.ToLower() == "help")
                 {
@@ -149,6 +158,90 @@ namespace Application
                 else
                 {
                     Console.WriteLine("Enter a whole integer above {0} and below {1} or b to go back:", min, max);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Starts an online game of tron.
+        /// </summary>
+        public static void StartOnlineGame()
+        {
+            // Get ip
+            IPAddress hostIP;
+            while (true)
+            {
+                hostIP = GetIpFromUser();
+                if (hostIP == null)
+                {
+                    // Exit method if user does not wish to play online
+                    return;
+                }
+
+                // Connect
+                Console.WriteLine("Connecting...");
+                bool? connected = GameData.Client.Connect(hostIP);
+                if (connected == null)
+                {
+                    Console.WriteLine("Host not found!");
+                }
+                else if (connected == false)
+                {
+                    Console.WriteLine("Server is full!");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine("Connected!");
+            Console.Write("Waiting for new round to start...\nPress any key to disconnect... ");
+
+            // Wait for new round
+            while (true)
+            {
+                if (Console.KeyAvailable == true)
+                {
+                    // Exit method if key was pressed
+                    Console.ReadKey(true);
+                    Console.WriteLine();
+                    break;
+                }
+                else if (TronData.Tron.TimeTillAction > 0)
+                {
+                    // Start game if new round is commencing
+                    StartGame();
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets an ip address from the user.
+        /// </summary>
+        /// <remarks> If null is returned the user wishes to go back. </remarks>
+        public static IPAddress GetIpFromUser()
+        {
+            while (true)
+            {
+                Console.Write("Enter the IP address of the server of b to go back... ");
+
+                // Get the input
+                string inp = Console.ReadLine();
+                IPAddress ip;
+
+                if (inp == "b")
+                {
+                    return null;
+                }
+                else if (IPAddress.TryParse(inp, out ip))
+                {
+                    return ip;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid IP address!");
                 }
             }
         }
