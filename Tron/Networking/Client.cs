@@ -3,7 +3,10 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Networking.Extensions;
+using Tron;
 using Tron.CarData;
+using System.Timers;
 
 namespace Networking
 {
@@ -116,7 +119,65 @@ namespace Networking
         /// <param name="packet"> The packet of data. </param>
         public void ParsePacket(byte[] packet)
         {
-            // TODO: Implement parsing of packets
+            // Work out if it is car data or a server message
+            if (packet[0] == 255)
+            {
+                this.ParseServerPacket(packet);
+            }
+            else
+            {
+                this.ParseCarPacket(packet);
+            }
+        }
+
+        /// <summary>
+        /// Parses a packet about the game information sent to the client.
+        /// </summary>
+        /// <param name="packet"> The packet of data. </param>
+        public void ParseServerPacket(byte[] packet)
+        {
+            if (packet.Length == 2)
+            {
+                // Set the timer
+                TronData.Tron.TimeTillAction = packet[1] + 1;
+
+                // Run the timer decreaser
+                TronData.Tron.DecTimer();
+            }
+            else
+            {
+                // Set scores
+                for (int i = 1; i < packet.Length; i++)
+                {
+                    TronData.Tron.SetCarScoreFromByteArray(new byte[] { packet[i], packet[i + 1] });
+                }
+            }
+        }
+
+        /// <summary>
+        /// Parses a packet about a car sent to the client.
+        /// </summary>
+        /// <param name="packet"> The packet of data. </param>
+        public void ParseCarPacket(byte[] packet)
+        {
+            if (packet.Length == 2)
+            {
+                if (packet[1] == 255)
+                {
+                    // Remove car if told to
+                    TronData.Tron.RemovePlayer(packet[0]);
+                }
+                else
+                {
+                    // Crash car if told to
+                    TronData.Tron.Cars[packet[0]].Alive = false;
+                }
+            }
+            else
+            {
+                // Set the position
+                TronData.Tron.SetCarPosFromByteArray(packet);
+            }
         }
 
         /// <summary>
