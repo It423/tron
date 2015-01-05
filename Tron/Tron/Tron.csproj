@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Drawing.cs" />
     <Compile Include="EventArguments\CrashedEventArgs.cs" />
+    <Compile Include="EventArguments\TimerChangedEventArgs.cs" />
     <Compile Include="EventArguments\MovedEventArgs.cs" />
     <Compile Include="Exceptions\TooManyPlayersException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
