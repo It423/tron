@@ -368,7 +368,7 @@ namespace Tron
                     this.TimeTillAction = 15;
                 }
 
-                // Reset the game 
+                // Reset the game
                 this.ResetGame(this.GameWon);
             }
             else
@@ -389,8 +389,6 @@ namespace Tron
                 // Decrease the timer
                 this.TimeTillAction--;
             }
-
-
         }
 
         /// <summary>
