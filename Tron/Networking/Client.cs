@@ -131,6 +131,7 @@ namespace Networking
         /// <summary>
         /// Sends the server a message saying the client is trying to change direction.
         /// </summary>
+        /// <param name="direction"> The direction the client is trying to move. </param>
         public void SendDirection(Direction direction)
         {
             this.Connector.Send(new byte[] { (byte)(int)direction }, 1, this.HostIP);
