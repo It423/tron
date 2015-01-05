@@ -1,6 +1,7 @@
 // Game.cs
 // <copyright file="Game.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -98,6 +99,7 @@ namespace Application
                 this.Exit();
             }
 
+            // Update game
             if (GameData.LocalMultiPlayer)
             {
                 TronData.Tron.Update();
@@ -105,6 +107,13 @@ namespace Application
             else
             {
                 TronData.Tron.CheckRoundOver();
+
+                // Check if the player has been kicked
+                if (GameData.Client.HostIP == new IPEndPoint(IPAddress.Any, 0))
+                {
+                    this.Exit();
+                    Console.WriteLine("You have been disconnected from the server.");
+                }
             }
 
             this.UpdateInputs();
@@ -252,6 +261,19 @@ namespace Application
             GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Runs on the exiting of the game.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="args"> The event arguments. </param>
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            // Disconnect from server
+            GameData.Client.Disconnect();
+
+            base.OnExiting(sender, args);
         }
     }
 }
