@@ -82,7 +82,7 @@ namespace Tron.CarData
         /// <summary>
         /// Gets or sets a value indicating whether the car has crashed.
         /// </summary>
-        public bool Alive { get; protected set; }
+        public bool Alive { get; set; }
         
         /// <summary>
         /// Gets or sets the amount of victories for this car.
