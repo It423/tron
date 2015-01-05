@@ -389,6 +389,9 @@ namespace Tron
                 // Decrease the timer
                 this.TimeTillAction--;
             }
+
+            // Fire the on timer change event
+            this.OnTimerChange(this, new TimerChangedEventArgs(this.TimeTillAction));
         }
 
         /// <summary>
