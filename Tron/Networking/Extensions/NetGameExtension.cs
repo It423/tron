@@ -14,13 +14,22 @@ namespace Networking.Extensions
         /// </summary>
         /// <param name="g"> The game. </param>
         /// <param name="byteArray"> The byte array. </param>
-        public static void SetCarFromByteArray(this TronGame g, byte[] byteArray)
+        public static void SetCarPosFromByteArray(this TronGame g, byte[] byteArray)
         {
             // Get the index of the car
             int index = byteArray[0];
 
             // Adjust the car 
-            g.Cars[index].FromByteArray(byteArray);
+            g.Cars[index].PosFromByteArray(byteArray);
+        }
+
+        public static void SetCarScoreFromByteArray(this TronGame g, byte[] byteArray)
+        {
+            // Get the index of the car
+            int index = byteArray[0];
+
+            // Adjust the car
+            g.Cars[index].ScoreFromByteArray(byteArray);
         }
     }
 }

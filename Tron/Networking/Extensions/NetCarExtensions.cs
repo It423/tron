@@ -14,7 +14,7 @@ namespace Networking.Extensions
         /// </summary>
         /// <param name="c"> The car. </param>
         /// <returns> The byte array of information. </returns>
-        public static byte[] ToByteArray(this Car c)
+        public static byte[] PosToByteArray(this Car c)
         {
             // There will be 4 bytes in the car's byte data
             byte[] bArr = new byte[4];
@@ -44,11 +44,39 @@ namespace Networking.Extensions
         /// </summary>
         /// <param name="c"> The car. </param>
         /// <param name="byteArray"> The byte array. </param>
-        public static void FromByteArray(this Car c, byte[] byteArray)
+        public static void PosFromByteArray(this Car c, byte[] byteArray)
         {
             // Take the x and y position
             c.X = byteArray[1] + byteArray[2];
             c.Y = byteArray[3];
+        }
+
+        /// <summary>
+        /// Turns the car's score information into a byte array.
+        /// </summary>
+        /// <param name="c"> The car. </param>
+        /// <returns> The byte array of information. </returns>
+        public static byte[] ScoreToByteArray(this Car c)
+        {
+            // There will be =2 bytes in the car's byte data
+            byte[] bArr = new byte[2];
+
+            // Add the id and score
+            bArr[0] = (byte)c.ID;
+            bArr[1] = (byte)c.Victories;
+
+            return bArr;
+        }
+
+        /// <summary>
+        /// Sets the car's score from a byte array.
+        /// </summary>
+        /// <param name="c"> The car. </param>
+        /// <param name="byteArray"> The byte array. </param>
+        public static void ScoreFromByteArray(this Car c, byte[] byteArray)
+        {
+            // Take the score
+            c.Victories = byteArray[1];
         }
     }
 }
