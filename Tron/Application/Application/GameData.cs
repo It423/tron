@@ -49,7 +49,7 @@ namespace Application
                     return;
                 }
 
-                // Run online direction change
+                Client.SendDirection(direction);
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Application
                     return;
                 }
 
-                // Run online boost
+                Client.SendBoost();
             }
             else
             {
