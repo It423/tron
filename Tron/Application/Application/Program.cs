@@ -200,6 +200,7 @@ namespace Application
 
             Console.WriteLine("Connected!");
             Console.Write("Waiting for new round to start...\nPress any key to disconnect... ");
+            TronData.Tron.TimeTillAction = 0;
 
             // Wait for new round
             while (true)
