@@ -2,7 +2,6 @@
 // <copyright file="Program.cs"> This code is protected under the MIT License. </copyright>
 using System;
 using System.Net;
-using System.Threading;
 using Networking;
 using Tron;
 
