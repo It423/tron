@@ -40,26 +40,30 @@ namespace Application
         /// <param name="player"> The player inputting the move. </param>
         public static void ChangeDirection(Direction direction, int player)
         {
-            // Change the id of the player being redirected if not local two player
-            if (!LocalMultiPlayer)
+            // Only run command if the game is active
+            if (!TronData.Tron.RoundFinished)
             {
-                // If the player key set is not that of player one don't do anything
-                if (player != 0)
+                // Send redirection to client if not local multiplayer
+                if (!LocalMultiPlayer)
                 {
-                    return;
-                }
+                    // If the player key set is not that of player one don't do anything
+                    if (player != 0)
+                    {
+                        return;
+                    }
 
-                Client.SendDirection(direction);
-            }
-            else
-            {
-                // Don't do anything if the command is for a non existant player
-                if (player + 1 > LocalPlayers)
+                    Client.SendDirection(direction);
+                }
+                else
                 {
-                    return;
-                }
+                    // Don't do anything if the command is for a non existant player
+                    if (player + 1 > LocalPlayers)
+                    {
+                        return;
+                    }
 
-                TronData.Tron.Cars[player].ChangeDirection(direction);
+                    TronData.Tron.Cars[player].ChangeDirection(direction);
+                }
             }
         }
 
@@ -69,26 +73,30 @@ namespace Application
         /// <param name="player"> The player inputting the boost. </param>
         public static void Boost(int player)
         {
-            // Change the id of the player being boosted if not local two player
-            if (!LocalMultiPlayer)
+            // Only run command if the game is active
+            if (!TronData.Tron.RoundFinished)
             {
-                // If the player key set is not that of player one don't do anything
-                if (player != 0)
+                // Send boost to client if not local multiplayer
+                if (!LocalMultiPlayer)
                 {
-                    return;
-                }
+                    // If the player key set is not that of player one don't do anything
+                    if (player != 0)
+                    {
+                        return;
+                    }
 
-                Client.SendBoost();
-            }
-            else
-            {
-                // Don't do anything if the command is for a non existant player
-                if (player + 1 > LocalPlayers)
+                    Client.SendBoost();
+                }
+                else
                 {
-                    return;
-                }
+                    // Don't do anything if the command is for a non existant player
+                    if (player + 1 > LocalPlayers)
+                    {
+                        return;
+                    }
 
-                TronData.Tron.Cars[player].Boost();
+                    TronData.Tron.Cars[player].Boost();
+                }
             }
         }
 
