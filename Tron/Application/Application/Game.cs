@@ -98,7 +98,7 @@ namespace Application
                 this.Exit();
             }
 
-            GameData.Tron.Update();
+            TronData.Tron.Update();
 
             this.UpdateInputs();
 
@@ -241,7 +241,7 @@ namespace Application
         {
             GraphicsDevice.Clear(Drawing.GetColour(CellValues.None));
 
-            GameData.Tron.Draw(SpriteBatch);
+            TronData.Tron.Draw(SpriteBatch);
             GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);

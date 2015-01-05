@@ -117,8 +117,8 @@ namespace Application
             // Setup the game data
             GameData.LocalMultiPlayer = true;
             GameData.LocalPlayers = players;
-            GameData.Tron = new TronGame(players, pointsToWin);
-            GameData.Tron.InitializeGame();
+            TronData.Tron = new TronGame(players, pointsToWin);
+            TronData.Tron.InitializeGame();
 
             // Start the game
             StartGame();
