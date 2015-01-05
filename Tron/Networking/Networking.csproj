@@ -70,10 +70,6 @@
     <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application\Application.csproj">
-      <Project>{d200f123-d7ae-43e2-868c-0fe17ddc98e1}</Project>
-      <Name>Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tron\Tron.csproj">
       <Project>{0b6adb78-edab-4a65-ae23-8a2883f3da4f}</Project>
       <Name>Tron</Name>

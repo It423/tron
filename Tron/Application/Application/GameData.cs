@@ -2,6 +2,7 @@
 // <copyright file="GameData.cs"> This code is protected under the MIT License. </copyright>
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Networking;
 using Tron;
 using Tron.CarData;
 
@@ -16,11 +17,6 @@ namespace Application
         /// The list of x positions for the game HUD.
         /// </summary>
         public static readonly int[] LocalHUDXPos = { 100, (TronGame.GridWidth * 2) - 280, TronGame.GridWidth - 90 };
-        
-        /// <summary>
-        /// Gets or sets the game information.
-        /// </summary>
-        public static TronGame Tron { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the current game is a local multiplayer one.
@@ -33,9 +29,9 @@ namespace Application
         public static int LocalPlayers { get; set; }
 
         /// <summary>
-        /// Gets or sets the id number for the online player you represent.
+        /// Gets or sets the client for the networked game.
         /// </summary>
-        public static int OnlinePlayerId { get; set; }
+        public static Client Client { get; set; }
 
         /// <summary>
         /// Sends the move command to a player.
@@ -63,7 +59,7 @@ namespace Application
                     return;
                 }
 
-                Tron.Cars[player].ChangeDirection(direction);
+                TronData.Tron.Cars[player].ChangeDirection(direction);
             }
         }
 
@@ -92,7 +88,7 @@ namespace Application
                     return;
                 }
 
-                Tron.Cars[player].Boost();
+                TronData.Tron.Cars[player].Boost();
             }
         }
 
@@ -109,14 +105,14 @@ namespace Application
                 // Draw player one and player two's HUD
                for (int i = 0; i < LocalPlayers; i++)
                {
-                   Drawing.DrawHUD(LocalHUDXPos[i], Tron.Cars[i], spriteBatch);
+                   Drawing.DrawHUD(LocalHUDXPos[i], TronData.Tron.Cars[i], spriteBatch);
                }
             }
             else
             {
                 // Draw the player's HUD and the leaderboard
-                Drawing.DrawHUD(LocalHUDXPos[0], Tron.Cars[OnlinePlayerId], spriteBatch);
-                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(Tron.Cars.Count - 1) / 4))), Tron.Cars, spriteBatch);
+                Drawing.DrawHUD(LocalHUDXPos[0], TronData.Tron.Cars[Client.OnlinePlayerId], spriteBatch);
+                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(TronData.Tron.Cars.Count - 1) / 4))), TronData.Tron.Cars, spriteBatch);
             }
 
             spriteBatch.End();

@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="SpawnLists.cs" />
     <Compile Include="TronGame.cs" />
+    <Compile Include="TronData.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -94,6 +94,10 @@
     <Content Include="Game.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Networking\Networking.csproj">
+      <Project>{582a6fb5-0d0e-47d4-831d-3ee3dd1a51dd}</Project>
+      <Name>Networking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tron\Tron.csproj">
       <Project>{0b6adb78-edab-4a65-ae23-8a2883f3da4f}</Project>
       <Name>Tron</Name>
