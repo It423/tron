@@ -54,6 +54,7 @@ namespace Application
             Console.WriteLine("B for boost.\n\n");
             Console.WriteLine("To play local multiplayer type 'local'");
             Console.WriteLine("To play online multiplayer type 'online'");
+            Console.WriteLine("To see what local servers are presently available type 'lan list'");
             Console.WriteLine("To display this message again type 'help'");
             Console.WriteLine("To quit the game type 'quit'");
         }
@@ -76,6 +77,10 @@ namespace Application
                 else if (inp.ToLower() == "online")
                 {
                     StartOnlineGame();
+                }
+                else if (inp.ToLower() == "lan list")
+                {
+                    SearchLanForServers();
                 }
                 else if (inp.ToLower() == "help")
                 {
@@ -242,6 +247,24 @@ namespace Application
                     Console.WriteLine("Invalid IP address!");
                 }
             }
+        }
+
+        /// <summary>
+        /// Searches the local area network for servers and prints a list of them on the screen.
+        /// </summary>
+        public static void SearchLanForServers()
+        {
+            // Get list of servers
+            Console.Write("Searching... ");
+            IPAddress[] ips = GameData.Client.SearchLANForServers();
+            Console.WriteLine("Found {0} servers at:\n", ips.Length);
+
+            // Show servers
+            foreach (IPAddress ip in ips)
+            {
+                Console.WriteLine(ip.ToString());
+            }
+            Console.WriteLine();
         }
 
         /// <summary>

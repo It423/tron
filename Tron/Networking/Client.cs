@@ -1,12 +1,13 @@
 ﻿// Client.cs
 // <copyright file="Client.cs"> This code is protected under the MIT License. </copyright>
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Timers;
 using Networking.Extensions;
 using Tron;
 using Tron.CarData;
-using System.Timers;
 
 namespace Networking
 {
@@ -22,6 +23,7 @@ namespace Networking
         {
             this.Connector = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
             this.HostIP = new IPEndPoint(IPAddress.Any, 0);
+            this.ListenThread = new Thread(() => this.ListenForMessages());
         }
 
         /// <summary>
@@ -40,6 +42,49 @@ namespace Networking
         public int OnlinePlayerId { get; set; }
 
         /// <summary>
+        /// Gets or sets the thread for listening for messages.
+        /// </summary>
+        protected Thread ListenThread { get; set; }
+
+        /// <summary>
+        /// Searches the local area network for available servers.
+        /// </summary>
+        /// <returns> The ip addresses of available servers. </returns>
+        public IPAddress[] SearchLANForServers()
+        {
+            // Set 5 second timeout
+            this.Connector.Client.ReceiveTimeout = 5000;
+
+            // Send a message saying we are searching
+            byte[] packet = new byte[] { 0 };
+            this.Connector.Send(packet, 1, new IPEndPoint(IPAddress.Parse("255.255.255.255"), Server.Port));
+
+            // Wait for responses
+            List<IPAddress> ips = new List<IPAddress>();
+            while (true)
+            {
+                try
+                {
+                    IPEndPoint senderIP = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] receivedPacket = this.Connector.Receive(ref senderIP);
+
+                    // Check the packet is valid and the server says it has space
+                    if (receivedPacket.Length == 0 && receivedPacket[0] <= 12)
+                    {
+                        ips.Add(senderIP.Address);
+                    }
+                }
+                catch
+                {
+                    // Receive timed out, no more ips received
+                    break;
+                }
+            }
+
+            return ips.ToArray();
+        }
+
+        /// <summary>
         /// Connects to a host at a specified ip address.
         /// </summary>
         /// <param name="hostIP"> The host's ip address. </param>
@@ -50,7 +95,7 @@ namespace Networking
             // Set the timeout to 5 seconds
             this.Connector.Client.ReceiveTimeout = 5000;
 
-            // Send a message to the host
+            // Send a message to the host saying we are trying to connect
             byte[] packet = new byte[] { 1 };
             this.Connector.Send(packet, 1, new IPEndPoint(hostIP, Server.Port));
 
@@ -85,7 +130,7 @@ namespace Networking
                 this.Connector.Client.ReceiveTimeout = -1;
 
                 // Start listening for messages
-                Thread t = new Thread(() => this.ListenForMessages());
+                this.ListenThread = new Thread(() => this.ListenForMessages());
 
                 return true;
             }
@@ -136,7 +181,17 @@ namespace Networking
         /// <param name="packet"> The packet of data. </param>
         public void ParseServerPacket(byte[] packet)
         {
-            if (packet.Length == 2)
+            if (packet.Length == 2 && packet[1] == 0)
+            {
+                // Add a car
+                TronData.Tron.AddPlayer();
+            }
+            if (packet.Length == 2 && packet[1] == 255)
+            {
+                // Disconnected
+                this.HostIP = new IPEndPoint(IPAddress.Any, 0); // Only remove the host ip ad this will stop incomming transmissions and the game will detect this and run the disconnect method
+            }
+            else if (packet.Length == 3 && packet[1] == 255)
             {
                 // Set the timer
                 TronData.Tron.TimeTillAction = packet[1] + 1;
@@ -185,8 +240,16 @@ namespace Networking
         /// </summary>
         public void Disconnect()
         {
-            this.SendDisconnect();
+            try
+            {
+                this.SendDisconnect();
+            }
+            catch (SocketException)
+            { 
+                // Catch socket exceptions from host ip being any ip address and port
+            }
             this.HostIP = new IPEndPoint(IPAddress.Any, 0);
+            this.ListenThread.Abort();
         }
 
         /// <summary>
