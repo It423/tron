@@ -67,7 +67,9 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Extensions\NetCarExtensions.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Server.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tron\Tron.csproj">
