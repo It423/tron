@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using Tron;
 using Tron.CarData;
+using Tron.EventArguments;
 
 namespace Networking
 {
@@ -232,6 +233,36 @@ namespace Networking
 
             // Send all clients a message saying this player has left
             this.SendToAll(new byte[] { (byte)index, 255 });
+        }
+
+        /// <summary>
+        /// Handles the update of a car.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public void HandleCarUpdate(object sender, MovedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Handles the crashing of a car.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public void HandleCarCrash(object sender, CrashedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Handles the update of the game timer.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public void HandleTimerUpdate(object sender, TimerChangedEventArgs e)
+        {
+
         }
     }
 }
