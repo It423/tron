@@ -213,7 +213,7 @@ namespace Application
                 {
                     // Exit method if key was pressed
                     Console.ReadKey(true);
-                    Console.WriteLine();
+                    Console.Write("Disconnecting... ");
                     break;
                 }
                 else if (TronData.Tron.TimeTillAction > 0)
@@ -222,10 +222,16 @@ namespace Application
                     StartGame();
                     break;
                 }
+                else if (GameData.Client.HostIP.Equals(new IPEndPoint(IPAddress.Any, 0)))
+                {
+                    Console.WriteLine("Kicked from server... ");
+                    break;
+                }
             }
 
             // Disconnect the client
             GameData.Client.Disconnect();
+            Console.WriteLine("Disconnected!");
         }
 
         /// <summary>
