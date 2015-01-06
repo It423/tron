@@ -130,11 +130,11 @@ namespace Networking
                 this.OnlinePlayerId = packet[0];
 
                 // Get player list
-                TronData.Tron.Players = 12;
-                TronData.Tron.InitializePlayers();
+                TronData.Tron.Players = 0;
+                TronData.Tron.Cars = new List<Car>(12);
                 for (int i = 0; i < 12; i++)
                 {
-                    TronData.Tron.Cars[i] = null;
+                    TronData.Tron.Cars.Add(null);
                 }
 
                 IPEndPoint hostEP = new IPEndPoint(IPAddress.Any, 0);
@@ -154,6 +154,7 @@ namespace Networking
 
                 foreach (byte b in playersPacket)
                 {
+                    TronData.Tron.AddPlayer();
                     TronData.Tron.Cars[b] = new Car(b, SpawnLists.XPositions[b], SpawnLists.YPositions[b], SpawnLists.Directions[b], (CellValues)b);
                 }
 
@@ -283,8 +284,12 @@ namespace Networking
             }
 
             this.HostIP = new IPEndPoint(IPAddress.Any, 0);
-            this.ListenThread.Abort();
-            this.ListenThread = null;
+
+            if (this.ListenThread != null)
+            {
+                this.ListenThread.Abort();
+                this.ListenThread = null;
+            }
 
             // Get another message avoiding issues with receiving the message "255" next
             this.Connector.Client.ReceiveTimeout = 5000;
