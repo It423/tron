@@ -32,7 +32,7 @@ namespace Networking
         public UdpClient Connector { get; set; }
 
         /// <summary>
-        /// Gets or sets the ip address of the host.
+        /// Gets or sets the ip end point of the host.
         /// </summary>
         public IPEndPoint HostIP { get; set; }
 
@@ -69,7 +69,7 @@ namespace Networking
                     byte[] receivedPacket = this.Connector.Receive(ref senderIP);
 
                     // Check the packet is valid and the server says it has space
-                    if (receivedPacket.Length == 0 && receivedPacket[0] <= 12)
+                    if (receivedPacket.Length == 1 && receivedPacket[0] <= 12)
                     {
                         ips.Add(senderIP.Address);
                     }
@@ -106,7 +106,7 @@ namespace Networking
                 packet = this.Connector.Receive(ref reply);
 
                 // Make sure its the same host
-                if (reply != new IPEndPoint(hostIP, Server.Port) || packet.Length != 1)
+                if (!reply.Equals(new IPEndPoint(hostIP, Server.Port)) || packet.Length != 1)
                 {
                     return null;
                 }
@@ -117,8 +117,8 @@ namespace Networking
                 return null;
             }
 
-            // Check if the server is full or a bad number
-            if (packet[0] == 255 || packet[0] > 11)
+            // Check if the server is full
+            if (packet[0] > 11)
             {
                 return false;
             }
@@ -127,9 +127,37 @@ namespace Networking
                 // Server is not full, connect to server
                 this.HostIP = new IPEndPoint(hostIP, Server.Port);
                 this.OnlinePlayerId = packet[0];
-                this.Connector.Client.ReceiveTimeout = -1;
+
+                // Get player list
+                TronData.Tron.Players = 12;
+                TronData.Tron.InitializePlayers();
+                for (int i = 0; i < 12; i++)
+                {
+                    TronData.Tron.Cars[i] = null;
+                }
+
+                IPEndPoint hostEP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] playersPacket;
+                do
+                {
+                    try
+                    {
+                        playersPacket = this.Connector.Receive(ref hostEP);
+                    }
+                    catch (SocketException)
+                    {
+                        return null; // Server did not reply with player list
+                    }
+                } 
+                while (!hostEP.Equals(this.HostIP));
+
+                foreach (byte b in playersPacket)
+                {
+                    TronData.Tron.Cars[b] = new Car(b, SpawnLists.XPositions[b], SpawnLists.YPositions[b], SpawnLists.Directions[b], (CellValues)b);
+                }
 
                 // Start listening for messages
+                this.Connector.Client.ReceiveTimeout = -1;
                 this.ListenThread = new Thread(() => this.ListenForMessages());
                 this.ListenThread.Start();
 
@@ -149,7 +177,7 @@ namespace Networking
                 byte[] packet = this.Connector.Receive(ref receiveFrom);
 
                 // Check its from server
-                if (receiveFrom != this.HostIP)
+                if (!receiveFrom.Equals(this.HostIP))
                 {
                     continue;
                 }
@@ -187,7 +215,7 @@ namespace Networking
                 // Add a car
                 TronData.Tron.AddPlayer();
             }
-            if (packet.Length == 2 && packet[1] == 255)
+            else if (packet.Length == 2 && packet[1] == 255)
             {
                 // Disconnected
                 this.HostIP = new IPEndPoint(IPAddress.Any, 0); // Only remove the host ip ad this will stop incomming transmissions and the game will detect this and run the disconnect method
@@ -249,8 +277,22 @@ namespace Networking
             { 
                 // Catch socket exceptions from host ip being any ip address and port
             }
+
             this.HostIP = new IPEndPoint(IPAddress.Any, 0);
             this.ListenThread.Abort();
+
+            // Get another message avoiding issues with receiving the message "255" next
+            this.Connector.Client.ReceiveTimeout = 5000;
+            try
+            {
+                IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
+                this.Connector.Receive(ref ep);
+            }
+            catch (SocketException)
+            {
+                // Catch socket exception from timeout
+            }
+            this.Connector.Client.ReceiveTimeout = -1;
         }
 
         /// <summary>
