@@ -187,3 +187,8 @@ FakesAssemblies/
 
 #GitEye
 .project
+
+# XNA publish files
+.cachefile
+.user
+[Pp]ublish/
