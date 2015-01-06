@@ -225,7 +225,7 @@ namespace Networking
             else if (packet.Length == 3 && packet[1] == 255)
             {
                 // Set the timer
-                TronData.Tron.TimeTillAction = packet[1] + 1;
+                TronData.Tron.TimeTillAction = packet[2] + 1;
 
                 // Run the timer decreaser
                 TronData.Tron.DecTimer();
