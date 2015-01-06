@@ -51,7 +51,7 @@ namespace Tron
             this.TimeTillAction = 5;
             this.Action = "round begins";
 
-            // Active the timer
+            // Activate the timer
             this.Timer = new Timer(1000);
             this.Timer.AutoReset = true;
             this.Timer.Elapsed += this.HandleTimer;
