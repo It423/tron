@@ -26,6 +26,7 @@ namespace Application
         {
             Console.Title = "Tron";
             GameData.Client = new Client();
+            TronData.Tron = new TronGame(0, 3);
             Help();
             GetCommand();
         }
@@ -196,6 +197,9 @@ namespace Application
                 {
                     break;
                 }
+
+                // Disconnect incase the server got half of the connection sequence
+                GameData.Client.Disconnect();
             }
 
             Console.WriteLine("Connected!");
@@ -219,6 +223,9 @@ namespace Application
                     break;
                 }
             }
+
+            // Disconnect the client
+            GameData.Client.Disconnect();
         }
 
         /// <summary>

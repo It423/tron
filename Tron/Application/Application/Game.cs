@@ -109,7 +109,7 @@ namespace Application
                 TronData.Tron.CheckRoundOver();
 
                 // Check if the player has been kicked
-                if (GameData.Client.HostIP == new IPEndPoint(IPAddress.Any, 0))
+                if (GameData.Client.HostIP.Equals(new IPEndPoint(IPAddress.Any, 0)))
                 {
                     this.Exit();
                     Console.WriteLine("You have been disconnected from the server.");
@@ -261,19 +261,6 @@ namespace Application
             GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);
-        }
-
-        /// <summary>
-        /// Runs on the exiting of the game.
-        /// </summary>
-        /// <param name="sender"> What raised the event. </param>
-        /// <param name="args"> The event arguments. </param>
-        protected override void OnExiting(object sender, EventArgs args)
-        {
-            // Disconnect from server
-            GameData.Client.Disconnect();
-
-            base.OnExiting(sender, args);
         }
     }
 }
