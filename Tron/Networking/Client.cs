@@ -228,10 +228,13 @@ namespace Networking
                 // Run the timer decreaser
                 TronData.Tron.DecTimer();
             }
-            else
+            else if (packet.Length >= 4)
             {
+                // Set score limit
+                TronData.Tron.PointsToWin = packet[1];
+
                 // Set scores
-                for (int i = 1; i < packet.Length; i++)
+                for (int i = 2; i < packet.Length; i++)
                 {
                     TronData.Tron.SetCarScoreFromByteArray(new byte[] { packet[i], packet[i + 1] });
                 }
