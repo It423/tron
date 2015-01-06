@@ -6,6 +6,7 @@ using System.Threading;
 using System.Timers;
 using Networking;
 using Tron;
+using System.Net.Sockets;
 
 namespace ServerApplication
 {    
@@ -18,6 +19,11 @@ namespace ServerApplication
         /// Gets or sets the instance of the server.
         /// </summary>
         public static Server Server { get; set; }
+
+        /// <summary>
+        /// Gets or sets the local ip address.
+        /// </summary>
+        public static IPAddress LocalIP { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the game has started.
@@ -42,6 +48,9 @@ namespace ServerApplication
         {
             // Add a shutdown hook to shutdown the server
             AppDomain.CurrentDomain.ProcessExit += (s, e) => { Server.ShutdownServer(); Timer.Stop(); };
+
+            // Get ip addresses if this machine
+            LocalIP = GetLocalIP();
 
             // Initailize the game and timer
             TronData.Tron = new TronGame(0, 1);
@@ -110,6 +119,7 @@ namespace ServerApplication
                 if (Input.ToLower().Substring(0, 6) == "start " && int.TryParse(Input.Substring(6), out parsedInt) && parsedInt > 0 && parsedInt <= 30 && TronData.Tron.Players >= 2)
                 {
                     GameStarted = true;
+                    TronData.Tron = new TronGame(TronData.Tron.Players, parsedInt);
                     TronData.Tron.InitializeGame();
                     TronData.Tron.TimerChanged += Server.HandleTimerUpdate;
                 }
@@ -130,13 +140,16 @@ namespace ServerApplication
         /// </summary>
         public static void DrawConsole()
         {
+            // Set window height to incude everything
+            Console.WindowHeight = 28;
+
             // Clear the console and wait to avoid display issues
             Thread.Sleep(50);
             Console.Clear();
 
             Console.WriteLine("Tron server:");
-            ////Console.WriteLine("Your local IP: {0}", );
-            ////Console.WriteLine("Your public IP: {0}", );
+            Console.WriteLine("Your local IP: {0}", LocalIP.ToString());
+            ////Console.WriteLine("Your public IP: {0}", PublicIP.ToString());
             Console.WriteLine("Game open on port: {0}\n", Server.Port);
 
             Console.WriteLine("Connected players:");
@@ -158,6 +171,27 @@ namespace ServerApplication
             Console.WriteLine("To close the server type 'close'.\n");
 
             Console.WriteLine(">>> {0}_", Input);
+        }
+
+        /// <summary>
+        /// Gets the local ip address.
+        /// </summary>
+        /// <returns> The local ip address. </returns>
+        public static IPAddress GetLocalIP()
+        {
+            // Get host entry
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (IPAddress ip in host.AddressList)
+            {
+                // Return the local ip
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

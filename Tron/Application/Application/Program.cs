@@ -219,6 +219,8 @@ namespace Application
                 else if (TronData.Tron.TimeTillAction > 0)
                 {
                     // Start game if new round is commencing
+                    TronData.Tron = new TronGame(TronData.Tron.Players, 3);
+                    TronData.Tron.InitializeGame();
                     StartGame();
                     break;
                 }

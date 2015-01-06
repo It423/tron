@@ -114,7 +114,15 @@ namespace Networking
             else if (packet[0] < 3)
             {
                 // Change direction of player
-                TronData.Tron.Cars[clientIndex].ChangeDirection((Direction)packet[0]);
+                try
+                {
+                    TronData.Tron.Cars[clientIndex].ChangeDirection((Direction)packet[0]);
+                }
+                catch (NullReferenceException)
+                {
+                    // Cathes error with previous connection issues
+                    this.RemovePlayer(clientIndex);
+                }
             }
             else
             {
@@ -144,9 +152,10 @@ namespace Networking
                     spaces = (byte)(12 - TronData.Tron.Players);
                     for (byte i = 0; i < 12; i++)
                     {
-                        if (this.PlayerIPs[i] != null)
+                        if (this.PlayerIPs[i] == null)
                         {
                             nextId = i;
+                            break;
                         }
                     }
                 }
@@ -287,6 +296,9 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Sends a list of car scores to the clients.
+        /// </summary>
         public void SendCarScoreList()
         {
             // Get the max rounds
