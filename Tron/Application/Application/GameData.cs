@@ -31,7 +31,7 @@ namespace Application
         /// <summary>
         /// Gets or sets the client for the networked game.
         /// </summary>
-        public static Client Client { get; set; }
+//        public static Client Client { get; set; }
 
         /// <summary>
         /// Sends the move command to a player.
@@ -52,7 +52,7 @@ namespace Application
                         return;
                     }
 
-                    Client.SendDirection(direction);
+//                    Client.SendDirection(direction);
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace Application
                         return;
                     }
 
-                    Client.SendBoost();
+//                    Client.SendBoost();
                 }
                 else
                 {
@@ -119,8 +119,8 @@ namespace Application
             else
             {
                 // Draw the player's HUD and the leaderboard
-                Drawing.DrawHUD(LocalHUDXPos[0], TronData.Tron.Cars[Client.OnlinePlayerId], spriteBatch);
-                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(TronData.Tron.Cars.Count - 1) / 4))), TronData.Tron.Cars, spriteBatch);
+//                Drawing.DrawHUD(LocalHUDXPos[0], TronData.Tron.Cars[Client.OnlinePlayerId], spriteBatch);
+//                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(TronData.Tron.Cars.Count - 1) / 4))), TronData.Tron.Cars, spriteBatch);
             }
 
             spriteBatch.End();

@@ -25,7 +25,7 @@ namespace Application
         public static void Main(string[] args)
         {
             Console.Title = "Tron";
-            GameData.Client = new Client();
+//            GameData.Client = new Client();
             TronData.Tron = new TronGame(0, 3);
             Help();
             GetCommand();
@@ -77,11 +77,11 @@ namespace Application
                 }
                 else if (inp.ToLower() == "online")
                 {
-                    StartOnlineGame();
+//                    StartOnlineGame();
                 }
                 else if (inp.ToLower() == "lan list")
                 {
-                    SearchLanForServers();
+//                    SearchLanForServers();
                 }
                 else if (inp.ToLower() == "help")
                 {
@@ -166,6 +166,7 @@ namespace Application
             }
         }
 
+        /*
         /// <summary>
         /// Starts an online game of tron.
         /// </summary>
@@ -221,6 +222,7 @@ namespace Application
                     // Start game if new round is commencing
                     TronData.Tron = new TronGame(TronData.Tron.Players, 3);
                     TronData.Tron.InitializeGame();
+                    GameData.LocalMultiPlayer = false;
                     StartGame();
                     break;
                 }
@@ -281,7 +283,7 @@ namespace Application
                 Console.WriteLine(ip.ToString());
             }
             Console.WriteLine();
-        }
+        } */
 
         /// <summary>
         /// Starts the game.

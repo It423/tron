@@ -60,13 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Extensions\NetGameExtension.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Extensions\NetCarExtensions.cs" />
     <Compile Include="Server.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
