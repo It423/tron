@@ -8,6 +8,7 @@ using System.Timers;
 using Networking.Extensions;
 using Tron;
 using Tron.CarData;
+using System;
 
 namespace Networking
 {
@@ -283,6 +284,7 @@ namespace Networking
 
             this.HostIP = new IPEndPoint(IPAddress.Any, 0);
             this.ListenThread.Abort();
+            this.ListenThread = null;
 
             // Get another message avoiding issues with receiving the message "255" next
             this.Connector.Client.ReceiveTimeout = 5000;

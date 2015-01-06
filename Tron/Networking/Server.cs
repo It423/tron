@@ -194,6 +194,9 @@ namespace Networking
                     byte[] playersPacket = existingPlayers.ToArray();
                     Thread t = new Thread(() => this.Host.Send(playersPacket, playersPacket.Length, endPoint));
                     t.Start();
+
+                    // Tell the game there is a new player
+                    TronData.Tron.AddPlayer();
                 }
             }
         }
@@ -222,15 +225,19 @@ namespace Networking
         /// <param name="index"> The index of the player to remove. </param>
         public void RemovePlayer(int index)
         {
-            // Tell client they are kicked
-            this.Host.Send(new byte[] { 255 }, 1, this.PlayerIPs[index]);
+            // Only remove player if they exist
+            if (this.PlayerIPs[index] != null)
+            {
+                // Tell client they are kicked
+                this.Host.Send(new byte[] { 255, 255 }, 2, this.PlayerIPs[index]);
 
-            // Remove their end point and remove from game
-            TronData.Tron.RemovePlayer(index);
-            this.PlayerIPs[index] = null;
+                // Remove their end point and remove from game
+                TronData.Tron.RemovePlayer(index);
+                this.PlayerIPs[index] = null;
 
-            // Send all clients a message saying this player has left
-            this.SendToAll(new byte[] { (byte)index, 255 });
+                // Send all clients a message saying this player has left
+                this.SendToAll(new byte[] { (byte)index, 255 });
+            }
         }
 
         /// <summary>
