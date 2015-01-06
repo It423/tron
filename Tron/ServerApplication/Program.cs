@@ -167,6 +167,19 @@ namespace ServerApplication
             if (GameStarted)
             {
                 TronData.Tron.Update();
+
+                if (TronData.Tron.Players <= 1)
+                { 
+                    // Kick users and stop game if not enough players
+                    for (int i = 0; i < 12; i++)
+                    {
+                        Server.RemovePlayer(i);
+                    }
+
+                    GameStarted = false;
+                    TronData.Tron = new TronGame(0, 1);
+                    TronData.Tron.TimerChanged -= Server.HandleTimerUpdate;
+                }
             }
         }
     }
