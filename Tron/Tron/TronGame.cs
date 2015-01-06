@@ -42,6 +42,7 @@ namespace Tron
             {
                 this.AddPlayer();
             }
+            this.Cars = new List<Car>(12);
 
             // Initalize other properties
             this.RoundFinished = true;
