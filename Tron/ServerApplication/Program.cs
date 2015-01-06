@@ -130,7 +130,10 @@ namespace ServerApplication
         /// </summary>
         public static void DrawConsole()
         {
+            // Clear the console and wait to avoid display issues
+            Thread.Sleep(50);
             Console.Clear();
+
             Console.WriteLine("Tron server:");
             ////Console.WriteLine("Your local IP: {0}", );
             ////Console.WriteLine("Your public IP: {0}", );
@@ -154,7 +157,7 @@ namespace ServerApplication
             Console.WriteLine("To kick a player type 'kick (player id)'\nPlayer id is next to their ip address.");
             Console.WriteLine("To close the server type 'close'.\n");
 
-            Console.WriteLine(">>> {0}", Input);
+            Console.WriteLine(">>> {0}_", Input);
         }
 
         /// <summary>
