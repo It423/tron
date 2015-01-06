@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Tron;
 using Tron.CarData;
 using Tron.EventArguments;
+using Networking.Extensions;
 
 namespace Networking
 {
@@ -120,7 +120,6 @@ namespace Networking
             {
                 // Disconnect player
                 this.RemovePlayer(clientIndex);
-                Console.WriteLine("Disconnect client");
             }
         }
 
@@ -194,8 +193,7 @@ namespace Networking
 
                     byte[] playersPacket = existingPlayers.ToArray();
                     Thread t = new Thread(() => this.Host.Send(playersPacket, playersPacket.Length, endPoint));
-                    //t.Start();
-                    Console.WriteLine("Received client connect");
+                    t.Start();
                 }
             }
         }
@@ -242,7 +240,7 @@ namespace Networking
         /// <param name="e"> The event arguments. </param>
         public void HandleCarUpdate(object sender, MovedEventArgs e)
         {
-
+            this.SendToAll(TronData.Tron.Cars[e.CarID].PosToByteArray());
         }
 
         /// <summary>
@@ -252,7 +250,7 @@ namespace Networking
         /// <param name="e"> The event arguments. </param>
         public void HandleCarCrash(object sender, CrashedEventArgs e)
         {
-
+            this.SendToAll(new byte[] { (byte)e.CarID, 0 });
         }
 
         /// <summary>
@@ -262,7 +260,46 @@ namespace Networking
         /// <param name="e"> The event arguments. </param>
         public void HandleTimerUpdate(object sender, TimerChangedEventArgs e)
         {
+            // Send timer update
+            this.SendToAll(new byte[] { 255, 255, (byte)e.TimeLeft });
 
+            // Send scores
+            this.SendCarScoreList();
+
+            // Apply to car event handlers if game has begun
+            if (e.TimeLeft == 0)
+            {
+                foreach (Car c in TronData.Tron.Cars)
+                {
+                    c.Moved -= this.HandleCarUpdate;
+                    c.Crashed -= this.HandleCarCrash;
+
+                    c.Moved += this.HandleCarUpdate;
+                    c.Crashed += this.HandleCarCrash;
+                }
+            }
+        }
+
+        public void SendCarScoreList()
+        {
+            // Get the max rounds
+            byte maxScore = (byte)TronData.Tron.PointsToWin;
+
+            // Get player scores
+            List<byte> playerScoreList = new List<byte>();
+            foreach (Car c in TronData.Tron.Cars)
+            {
+                byte[] scoreArray = c.ScoreToByteArray();
+                playerScoreList.Add(scoreArray[0]);
+                playerScoreList.Add(scoreArray[1]);
+            }
+
+            // Get the packet
+            byte[] packet = new byte[] { 255, maxScore };
+            packet.Concat(playerScoreList.ToArray());
+
+            // Send the score list
+            this.SendToAll(packet);
         }
     }
 }
