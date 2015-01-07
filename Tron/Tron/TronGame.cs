@@ -7,7 +7,6 @@ using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
 using Tron.CarData;
 using Tron.Exceptions;
-using Tron.EventArguments;
 
 namespace Tron
 {
@@ -59,11 +58,6 @@ namespace Tron
             this.Timer.Enabled = true;
             this.Timer.Start();
         }
-
-        /// <summary>
-        /// Fires when the timer changes.
-        /// </summary>
-        public event EventHandler<TimerChangedEventArgs> TimerChanged;
 
         /// <summary>
         /// Gets or sets the car list. 
@@ -390,9 +384,6 @@ namespace Tron
                 // Decrease the timer
                 this.TimeTillAction--;
             }
-
-            // Fire the on timer change event
-            this.OnTimerChange(this, new TimerChangedEventArgs(this.TimeTillAction));
         }
 
         /// <summary>
@@ -403,21 +394,6 @@ namespace Tron
         protected void HandleTimer(object sender, ElapsedEventArgs e)
         {
             this.DecTimer();
-        }
-
-        /// <summary>
-        /// Runs the event methods attached to the Crashed event.
-        /// </summary>
-        /// <param name="origin"> The origin of the event. </param>
-        /// <param name="e"> The event arguments. </param>
-        protected virtual void OnTimerChange(object origin, TimerChangedEventArgs e)
-        {
-            EventHandler<TimerChangedEventArgs> handler = this.TimerChanged;
-
-            if (handler != null)
-            {
-                handler(origin, e);
-            }
         }
     }
 }

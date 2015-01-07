@@ -65,16 +65,12 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Drawing.cs" />
-    <Compile Include="EventArguments\CrashedEventArgs.cs" />
-    <Compile Include="EventArguments\TimerChangedEventArgs.cs" />
-    <Compile Include="EventArguments\MovedEventArgs.cs" />
     <Compile Include="Exceptions\TooManyPlayersException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="SpawnLists.cs" />
     <Compile Include="TronGame.cs" />
-    <Compile Include="TronData.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,6 @@
 ﻿// Car.cs
 // <copyright file="Car.cs"> This code is protected under the MIT License. </copyright>
 using System;
-using Tron.CarData;
-using Tron.EventArguments;
 
 namespace Tron.CarData
 {
@@ -32,16 +30,6 @@ namespace Tron.CarData
             this.Alive = true;
             this.Victories = 0;
         }
-
-        /// <summary>
-        /// Fires when the car moves.
-        /// </summary>
-        public event EventHandler<MovedEventArgs> Moved;
-
-        /// <summary>
-        /// Fires when the car crashes.
-        /// </summary>
-        public event EventHandler<CrashedEventArgs> Crashed;
 
         /// <summary>
         /// Gets or sets the id number.
@@ -129,7 +117,6 @@ namespace Tron.CarData
                 if (this.HasCrashed(grid))
                 {
                     this.Alive = false;
-                    this.OnCrash(this, new CrashedEventArgs(this.ID));
                     return;
                 }
 
@@ -138,13 +125,11 @@ namespace Tron.CarData
 
                 // Move the car now we know it hasn't already crashed
                 this.Move();
-                this.OnMove(this, new MovedEventArgs(this.X, this.Y, this.ID));
 
                 // Check collision again
                 if (this.HasCrashed(grid))
                 {
                     this.Alive = false;
-                    this.OnCrash(this, new CrashedEventArgs(this.ID));
                 }
 
                 // Move twice if boost is active
@@ -235,36 +220,6 @@ namespace Tron.CarData
             else if (this.Direction == Direction.Left)
             {
                 this.X--;
-            }
-        }
-
-        /// <summary>
-        /// Runs the event methods attached to the Moved event.
-        /// </summary>
-        /// <param name="origin"> The origin of the event. </param>
-        /// <param name="e"> The event arguments. </param>
-        protected virtual void OnMove(object origin, MovedEventArgs e)
-        {
-            EventHandler<MovedEventArgs> handler = this.Moved;
-
-            if (handler != null)
-            {
-                handler(origin, e);
-            }
-        }
-
-        /// <summary>
-        /// Runs the event methods attached to the Crashed event.
-        /// </summary>
-        /// <param name="origin"> The origin of the event. </param>
-        /// <param name="e"> The event arguments. </param>
-        protected virtual void OnCrash(object origin, CrashedEventArgs e)
-        {
-            EventHandler<CrashedEventArgs> handler = this.Crashed;
-
-            if (handler != null)
-            {
-                handler(origin, e);
             }
         }
     }
