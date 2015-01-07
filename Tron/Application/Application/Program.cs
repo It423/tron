@@ -26,7 +26,7 @@ namespace Application
         {
             Console.Title = "Tron";
 //            GameData.Client = new Client();
-            TronData.Tron = new TronGame(0, 3);
+            GameData.Tron = new TronGame(0, 3);
             Help();
             GetCommand();
         }
@@ -130,8 +130,8 @@ namespace Application
             // Setup the game data
             GameData.LocalMultiPlayer = true;
             GameData.LocalPlayers = players;
-            TronData.Tron = new TronGame(players, pointsToWin);
-            TronData.Tron.InitializeGame();
+            GameData.Tron = new TronGame(players, pointsToWin);
+            GameData.Tron.InitializeGame();
 
             // Start the game
             StartGame();
@@ -205,7 +205,7 @@ namespace Application
 
             Console.WriteLine("Connected!");
             Console.Write("Waiting for new round to start...\nPress any key to disconnect... ");
-            TronData.Tron.TimeTillAction = 0;
+            GameData.Tron.TimeTillAction = 0;
 
             // Wait for new round
             while (true)
@@ -217,11 +217,11 @@ namespace Application
                     Console.Write("Disconnecting... ");
                     break;
                 }
-                else if (TronData.Tron.TimeTillAction > 0)
+                else if (GameData.Tron.TimeTillAction > 0)
                 {
                     // Start game if new round is commencing
-                    TronData.Tron = new TronGame(TronData.Tron.Players, 3);
-                    TronData.Tron.InitializeGame();
+                    GameData.Tron = new TronGame(GameData.Tron.Players, 3);
+                    GameData.Tron.InitializeGame();
                     GameData.LocalMultiPlayer = false;
                     StartGame();
                     break;

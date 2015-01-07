@@ -29,9 +29,14 @@ namespace Application
         public static int LocalPlayers { get; set; }
 
         /// <summary>
-        /// Gets or sets the client for the networked game.
+        /// Gets or sets the local tron game.
         /// </summary>
-//        public static Client Client { get; set; }
+        public static TronGame Tron { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client for a networked game.
+        /// </summary>
+        public static Client Client { get; set; }
 
         /// <summary>
         /// Sends the move command to a player.
@@ -41,7 +46,7 @@ namespace Application
         public static void ChangeDirection(Direction direction, int player)
         {
             // Only run command if the game is active
-            if (!TronData.Tron.RoundFinished)
+            if (!Tron.RoundFinished)
             {
                 // Send redirection to client if not local multiplayer
                 if (!LocalMultiPlayer)
@@ -62,7 +67,7 @@ namespace Application
                         return;
                     }
 
-                    TronData.Tron.Cars[player].ChangeDirection(direction);
+                    Tron.Cars[player].ChangeDirection(direction);
                 }
             }
         }
@@ -74,7 +79,7 @@ namespace Application
         public static void Boost(int player)
         {
             // Only run command if the game is active
-            if (!TronData.Tron.RoundFinished)
+            if (!Tron.RoundFinished)
             {
                 // Send boost to client if not local multiplayer
                 if (!LocalMultiPlayer)
@@ -95,7 +100,7 @@ namespace Application
                         return;
                     }
 
-                    TronData.Tron.Cars[player].Boost();
+                    Tron.Cars[player].Boost();
                 }
             }
         }
@@ -111,9 +116,9 @@ namespace Application
             if (LocalMultiPlayer)
             {
                 // Draw player one and player two's HUD
-               for (int i = 0; i < LocalPlayers; i++)
+                for (int i = 0; i < LocalPlayers; i++)
                {
-                   Drawing.DrawHUD(LocalHUDXPos[i], TronData.Tron.Cars[i], spriteBatch);
+                   Drawing.DrawHUD(LocalHUDXPos[i], Tron.Cars[i], spriteBatch);
                }
             }
             else

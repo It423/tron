@@ -102,13 +102,13 @@ namespace Application
             // Update game
             if (GameData.LocalMultiPlayer)
             {
-                TronData.Tron.Update();
+                GameData.Tron.Update();
             }
             else
             {
-                TronData.Tron.CheckRoundOver();
-
-                // Check if the player has been kicked
+//                GameData.Tron.CheckRoundOver();
+//
+//                // Check if the player has been kicked
 //                if (GameData.Client.HostIP.Equals(new IPEndPoint(IPAddress.Any, 0)))
 //                {
 //                    this.Exit();
@@ -257,7 +257,7 @@ namespace Application
         {
             GraphicsDevice.Clear(Drawing.GetColour(CellValues.None));
 
-            TronData.Tron.Draw(SpriteBatch);
+            GameData.Tron.Draw(SpriteBatch);
             GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);
