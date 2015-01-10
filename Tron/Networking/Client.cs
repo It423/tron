@@ -22,6 +22,7 @@ namespace Networking
             this.Socket = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
             this.HostEP = new IPEndPoint(IPAddress.Any, 0);
             this.Tron = new TronGame(0, 1);
+            this.OnlineID = 0;
             this.Connected = false;
         }
 
@@ -41,7 +42,12 @@ namespace Networking
         public TronGame Tron { get; set; }
 
         /// <summary>
-        /// Gets or sets a value inicating whether the client is connected to a server.
+        /// Gets or sets the client's online id.
+        /// </summary>
+        public int OnlineID { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the client is connected to a server.
         /// </summary>
         public bool Connected { get; set; }
 
@@ -88,7 +94,7 @@ namespace Networking
         /// <summary>
         /// Connects to a server.
         /// </summary>
-        /// <param name="hostEp"> The servers ip address. </param>
+        /// <param name="hostIp"> The servers ip address. </param>
         /// <returns> Whether the connection worked. </returns>
         /// <remarks> If null was returned the host was not found. False means the server is full. </remarks>
         public bool? Connect(IPAddress hostIp)
@@ -110,7 +116,11 @@ namespace Networking
             {
                 return false;
             }
+            else
             {
+                // Store id
+                this.OnlineID = newId[0];
+
                 // Tell the server we got the message
                 this.Socket.Send(new byte[] { 1 }, 1, hostEp);
 
@@ -156,7 +166,7 @@ namespace Networking
         }
 
         /// <summary>
-        /// Gets a message from the server duing the connection sequence.
+        /// Gets a message from the server during the connection sequence.
         /// </summary>
         /// <param name="hostEp"> The server's end point. </param>
         /// <returns> The message from the server. </returns>

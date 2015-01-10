@@ -160,6 +160,7 @@ namespace Networking
         /// <summary>
         /// Sends a message to all connected clients.
         /// </summary>
+        /// <param name="packet"> The packet of data. </param>
         public void SendToAll(byte[] packet)
         {
             // Get a list of connected clients
