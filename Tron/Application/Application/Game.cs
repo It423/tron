@@ -106,14 +106,14 @@ namespace Application
             }
             else
             {
-//                GameData.Tron.CheckRoundOver();
-//
-//                // Check if the player has been kicked
-//                if (GameData.Client.HostIP.Equals(new IPEndPoint(IPAddress.Any, 0)))
-//                {
-//                    this.Exit();
-//                    Console.WriteLine("You have been disconnected from the server.");
-//                }
+                GameData.Client.Tron.CheckRoundOver();
+
+                // Check if the player has been kicked
+                if (!GameData.Client.Connected)
+                {
+                    this.Exit();
+                    Console.WriteLine("You have been disconnected from the server.");
+                }
             }
 
             this.UpdateInputs();
