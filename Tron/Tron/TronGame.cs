@@ -110,15 +110,6 @@ namespace Tron
         public Timer Timer { get; set; }
 
         /// <summary>
-        /// Start the game.
-        /// </summary>
-        public void InitializeGame()
-        {
-            this.InitializeGrid();
-            this.InitializePlayers();
-        }
-
-        /// <summary>
         /// Initializes the grid.
         /// </summary>
         public void InitializeGrid()
@@ -130,21 +121,6 @@ namespace Tron
             for (int i = 0; i < TronGame.GridWidth; i++)
             {
                 this.Grid[i] = new CellValues[TronGame.GridHeight];
-            }
-        }
-
-        /// <summary>
-        /// Initializes the players.
-        /// </summary>
-        public void InitializePlayers()
-        {
-            // Initialize the car list
-            this.Cars = new List<Car>(12);
-
-            // Initialize each car
-            for (int i = 0; i < this.Players; i++)
-            {
-                this.Cars.Add(new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i + 1));
             }
         }
 
