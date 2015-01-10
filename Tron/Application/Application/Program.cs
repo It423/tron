@@ -77,7 +77,7 @@ namespace Application
                 }
                 else if (inp.ToLower() == "online")
                 {
-//                    StartOnlineGame();
+                    StartOnlineGame();
                 }
                 else if (inp.ToLower() == "lan list")
                 {
@@ -131,7 +131,7 @@ namespace Application
             GameData.LocalMultiPlayer = true;
             GameData.LocalPlayers = players;
             GameData.Tron = new TronGame(players, pointsToWin);
-            GameData.Tron.InitializeGame();
+            GameData.Tron.ResetGame(true);
 
             // Start the game
             StartGame();
@@ -171,7 +171,37 @@ namespace Application
         /// </summary>
         public static void StartOnlineGame()
         {
+            while (true)
+            {
+                // Get ip from user
+                IPAddress inputtedIp = GetIpFromUser();
+                if (inputtedIp == null)
+                {
+                    // Exit method if user wises to go back
+                    return;
+                }
+                else
+                {
+                    // Connect to server
+                    Console.WriteLine("Connecting... ");
+                    bool? connected = GameData.Client.Connect(inputtedIp);
 
+                    // Write message
+                    if (connected == null)
+                    {
+                        Console.WriteLine("Host not found!");
+                    }
+                    else if (connected == false)
+                    {
+                        Console.WriteLine("Server is full!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Connected!");
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -1,12 +1,6 @@
 ﻿// Program.cs
 // <copyright file="Program.cs"> This code is protected under the MIT License. </copyright>using System;
-using System;
-using System.Net;
-using System.Threading;
-using System.Timers;
 using Networking;
-using Tron;
-using System.Net.Sockets;
 
 namespace ServerApplication
 {    
