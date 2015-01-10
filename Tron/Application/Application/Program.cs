@@ -25,7 +25,7 @@ namespace Application
         public static void Main(string[] args)
         {
             Console.Title = "Tron";
-//            GameData.Client = new Client();
+            GameData.Client = new Client();
             GameData.Tron = new TronGame(0, 3);
             Help();
             GetCommand();
@@ -81,7 +81,7 @@ namespace Application
                 }
                 else if (inp.ToLower() == "lan list")
                 {
-//                    SearchLanForServers();
+                    SearchLanForServers();
                 }
                 else if (inp.ToLower() == "help")
                 {
@@ -166,76 +166,12 @@ namespace Application
             }
         }
 
-        /*
         /// <summary>
         /// Starts an online game of tron.
         /// </summary>
         public static void StartOnlineGame()
         {
-            // Get ip
-            IPAddress hostIP;
-            while (true)
-            {
-                hostIP = GetIpFromUser();
-                if (hostIP == null)
-                {
-                    // Exit method if user does not wish to play online
-                    return;
-                }
 
-                // Connect
-                Console.WriteLine("Connecting...");
-                bool? connected = GameData.Client.Connect(hostIP);
-                if (connected == null)
-                {
-                    Console.WriteLine("Host not found!");
-                }
-                else if (connected == false)
-                {
-                    Console.WriteLine("Server is full!");
-                }
-                else
-                {
-                    break;
-                }
-
-                // Disconnect incase the server got half of the connection sequence
-                GameData.Client.Disconnect();
-            }
-
-            Console.WriteLine("Connected!");
-            Console.Write("Waiting for new round to start...\nPress any key to disconnect... ");
-            GameData.Tron.TimeTillAction = 0;
-
-            // Wait for new round
-            while (true)
-            {
-                if (Console.KeyAvailable == true)
-                {
-                    // Exit method if key was pressed
-                    Console.ReadKey(true);
-                    Console.Write("Disconnecting... ");
-                    break;
-                }
-                else if (GameData.Tron.TimeTillAction > 0)
-                {
-                    // Start game if new round is commencing
-                    GameData.Tron = new TronGame(GameData.Tron.Players, 3);
-                    GameData.Tron.InitializeGame();
-                    GameData.LocalMultiPlayer = false;
-                    StartGame();
-                    break;
-                }
-                else if (GameData.Client.HostIP.Equals(new IPEndPoint(IPAddress.Any, 0)))
-                {
-                    Console.WriteLine("Kicked from server... ");
-                    break;
-                }
-            }
-
-            // Disconnect the client
-            GameData.Client.Disconnect();
-            Console.WriteLine("Disconnected!");
         }
 
         /// <summary>
@@ -274,7 +210,7 @@ namespace Application
         {
             // Get list of servers
             Console.Write("Searching... ");
-            IPAddress[] ips = GameData.Client.SearchLANForServers();
+            IPAddress[] ips = GameData.Client.SearchForLanServers();
             Console.WriteLine("Found {0} servers at:\n", ips.Length);
 
             // Show servers
@@ -282,8 +218,9 @@ namespace Application
             {
                 Console.WriteLine(ip.ToString());
             }
+
             Console.WriteLine();
-        } */
+        } 
 
         /// <summary>
         /// Starts the game.

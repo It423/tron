@@ -21,6 +21,8 @@ namespace ServerApplication
         /// <param name="args"> Any arguments/commands that the program is run/compiled with. </param>
         public static void Main(string[] args)
         {
+            Server s = new Server();
+            s.Listen();
         }
     }
 }
