@@ -1,5 +1,6 @@
 ﻿// Server.cs
 // <copyright file="Server.cs"> This code is protected under the MIT License. </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -67,16 +68,52 @@ namespace Networking
         }
 
         /// <summary>
+        /// Shutsdown the server.
+        /// </summary>
+        public void Shutdown()
+        {
+            // Tell all clients they are disconnected
+            for (int i = 0; i < 12; i++)
+            {
+                this.RemovePlayer(i, true);
+            }
+
+            // Stop listening
+            this.ListenThread.Abort();
+            this.Socket.Close();
+            
+            // Stop the game
+            this.Tron = null;
+        }
+
+        /// <summary>
         /// Listens for incoming connections.
         /// </summary>
         public void Listen()
         {
             while (true)
             {
-                // Get a packet
+                // Initialize variables
                 IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-                byte[] packet = this.Socket.Receive(ref remoteEP);
+                byte[] packet = new byte[] { 0, 0 };
 
+                try
+                {
+                    // Get a packet
+                    packet = this.Socket.Receive(ref remoteEP);
+                }
+                catch (SocketException)
+                {
+                    // Catch errors and stop receiving if one was found
+                    break;
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Stop receiving if the socket has been closed
+                    break;
+                }
+                
+                // Parse packet
                 this.RespondToPacket(packet, remoteEP);
             }
         }
@@ -103,6 +140,11 @@ namespace Networking
             else
             {
                 // Packet from client
+                if (packet.Length == 1 && packet[0] == 255)
+                {
+                    // Client disconnected
+                    this.RemovePlayer(this.ClientEPs.IndexOf(remoteEP), false);
+                }
             }
         }
 
@@ -168,6 +210,31 @@ namespace Networking
             
             // Send the message to all clients
             eps.ForEach(ep => new Thread(() => this.Socket.Send(packet, packet.Length, ep)).Start());
+        }
+
+        /// <summary>
+        /// Removes a player.
+        /// </summary>
+        /// <param name="id"> The id of the player. </param>
+        /// <param name="kicked"> Whether the player was kicked. </param>
+        public void RemovePlayer(int id, bool kicked)
+        {
+            // Make sure the player is real
+            if (id < 12 && id >= 0 && this.ClientEPs[id] != null)
+            {
+                // Tell the player they are kicked
+                if (kicked)
+                {
+                    this.Socket.Send(new byte[] { 255, 255 }, 2, this.ClientEPs[id]);
+                }
+
+                // Disconnect player
+                this.ClientEPs[id] = null;
+                this.Tron.RemovePlayer(id);
+
+                // Tell other players to remove this player
+                this.SendToAll(new byte[] { (byte)id, 255 });
+            }
         }
 
         /// <summary>

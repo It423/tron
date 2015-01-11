@@ -1,9 +1,11 @@
 ﻿// Client.cs
 // <copyright file="Client.cs"> This code is protected under the MIT License. </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using Tron;
 using Tron.CarData;
 
@@ -35,6 +37,11 @@ namespace Networking
         /// Gets or sets the host end point.
         /// </summary>
         public IPEndPoint HostEP { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thread for listening to incomming transmissions.
+        /// </summary>
+        public Thread ListenThread { get; set; }
 
         /// <summary>
         /// Gets or sets the client game of tron.
@@ -99,6 +106,9 @@ namespace Networking
         /// <remarks> If null was returned the host was not found. False means the server is full. </remarks>
         public bool? Connect(IPAddress hostIp)
         {
+            // Initialize the socket (incase it has been previously disposed
+            this.Socket = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
+
             // Tell the server we are trying to connect
             IPEndPoint hostEp = new IPEndPoint(hostIp, Server.Port);
             this.Socket.Send(new byte[] { 0 }, 1, hostEp);
@@ -145,9 +155,10 @@ namespace Networking
                     activePlayerList.RemoveAt(0);
 
                     // Initialize the players
+                    this.Tron.Players = activePlayerList.Count + 1;
                     for (byte i = 0; i < 12; i++)
                     {
-                        if (activePlayerList.Contains(i))
+                        if (activePlayerList.Contains(i) || i == newId[0])
                         {
                             this.Tron.Cars.Add(new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i));
                         }
@@ -160,7 +171,93 @@ namespace Networking
                     // Finish connection
                     this.HostEP = hostEp;
                     this.Connected = true;
+                    this.ListenThread = new Thread(() => this.Listen());
+                    this.ListenThread.Start();
                     return true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disconnects from the server.
+        /// </summary>
+        /// <param name="kicked"> Whether the client was kicked or not. </param>
+        public void Disconnect(bool kicked)
+        {
+            // Tell the server we are disconnecting
+            if (!kicked)
+            {
+                this.Socket.Send(new byte[] { 255 }, 1, this.HostEP);
+            }
+
+            // Disconnect
+            this.HostEP = new IPEndPoint(IPAddress.Any, 0);
+            this.Socket.Close();
+            this.Tron = new TronGame(0, 1);
+            this.OnlineID = 0;
+            this.Connected = false;
+        }
+
+        /// <summary>
+        /// Listens for incomming transmissions.
+        /// </summary>
+        public void Listen()
+        {
+            while (true)
+            {
+                // Initalize variables
+                IPEndPoint remoteEp = new IPEndPoint(IPAddress.Any, 0);
+                byte[] packet = new byte[] { 255, 255 };
+
+                try
+                {
+                    // Get message
+                    packet = this.Socket.Receive(ref remoteEp);
+                }
+                catch (SocketException)
+                {
+                    // Catch errors and stop receiving if one was found
+                    break;
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Stop receiving if the socket has been closed
+                    break;
+                }
+                
+                // Parse packet
+                this.ParsePacket(packet, remoteEp);
+            }
+        }
+
+        /// <summary>
+        /// Parses a packet sent to the client.
+        /// </summary>
+        /// <param name="packet"> The packet of data. </param>
+        /// <param name="remoteEP"> The sender's ip end point. </param>
+        public void ParsePacket(byte[] packet, IPEndPoint remoteEp)
+        {
+            // Make sure its from the server
+            if (remoteEp.Equals(this.HostEP))
+            {
+                // Check if its a kick, add or remove message
+                if (packet.Length == 2)
+                {
+                    if (packet[0] == 255 && packet[1] == 255)
+                    {
+                        // Kicked
+                        this.Disconnect(true);
+                    }
+                    else if (packet[0] == 0 && packet[1] == 0)
+                    {
+                        // Add car
+                        this.Tron.AddPlayer();
+                    }
+                    else if (packet[0] < 12 && packet[1] == 255)
+                    {
+                        // Remove car
+                        this.Tron.RemovePlayer(packet[0]);
+                    }
                 }
             }
         }
