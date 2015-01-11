@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Tron;
+using Tron.CarData;
 
 namespace Networking
 {
@@ -140,10 +141,20 @@ namespace Networking
             else
             {
                 // Packet from client
-                if (packet.Length == 1 && packet[0] == 255)
+                if (packet[0] == 255)
                 {
                     // Client disconnected
                     this.RemovePlayer(this.ClientEPs.IndexOf(remoteEP), false);
+                }
+                else if (packet[0] < 4)
+                {
+                    // Change direction
+                    this.Tron.Cars[this.ClientEPs.IndexOf(remoteEP)].ChangeDirection((Direction)packet[0]);
+                }
+                else if (packet[0] == 4)
+                {
+                    // Boost
+                    this.Tron.Cars[this.ClientEPs.IndexOf(remoteEP)].Boost();
                 }
             }
         }
@@ -195,6 +206,7 @@ namespace Networking
                     // Add the player if the player received the data
                     this.SendToAll(new byte[] { 0, 0 });
                     this.ClientEPs[nextIndex] = remoteEP;
+                    this.Tron.AddPlayer();
                 }
             }
         }

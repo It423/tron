@@ -57,7 +57,7 @@ namespace Application
                         return;
                     }
 
-//                    Client.SendDirection(direction);
+                    Client.SendDirection(direction);
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace Application
                         return;
                     }
 
-//                    Client.SendBoost();
+                    Client.SendBoost();
                 }
                 else
                 {

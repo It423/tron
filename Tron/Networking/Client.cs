@@ -263,6 +263,23 @@ namespace Networking
         }
 
         /// <summary>
+        /// Sends a direction change input to the server.
+        /// </summary>
+        /// <param name="d"> The new direction. </param>
+        public void SendDirection(Direction d)
+        {
+            this.Socket.Send(new byte[] { (byte)d }, 1, this.HostEP);
+        }
+
+        /// <summary>
+        /// Sends a boost input to the server.
+        /// </summary>
+        public void SendBoost()
+        {
+            this.Socket.Send(new byte[] { 4 }, 1, this.HostEP);
+        }
+
+        /// <summary>
         /// Gets a message from the server during the connection sequence.
         /// </summary>
         /// <param name="hostEp"> The server's end point. </param>
