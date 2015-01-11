@@ -197,7 +197,29 @@ namespace Application
                     }
                     else
                     {
-                        Console.WriteLine("Connected!");
+                        Console.Write("Connected!\nWaiting for round to start! Press any key to disconnect... ");
+
+                        // Wait until round has started, player has asked to disconnect or the player has been kicked by the server
+                        while (true)
+                        {
+                            if (!GameData.Client.Connected)
+                            {
+                                // Kicked
+                                Console.WriteLine("\nYou were kicked from the server.");
+                                break;
+                            }
+                            else if (Console.KeyAvailable)
+                            {
+                                // User inputted key
+                                Console.ReadKey(true);
+                                Console.Write("\nDisconnecting... ");
+                                GameData.Client.Disconnect(false);
+                                Console.WriteLine("Disconnected!");
+                                break;
+                            }
+                            // Game started if statement
+                        }
+
                         break;
                     }
                 }
