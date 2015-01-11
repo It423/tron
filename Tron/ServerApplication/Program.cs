@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Networking;
+using Tron;
 
 namespace ServerApplication
 {    
@@ -113,7 +114,7 @@ namespace ServerApplication
                 }
                 else
                 {
-                    Console.WriteLine("{0}: {1}:{2}", i + 1, Server.ClientEPs[i].Address.ToString(), Server.ClientEPs[i].Port);
+                    Console.WriteLine("{0}: {1}:{2} ({3})", i + 1, Server.ClientEPs[i].Address.ToString(), Server.ClientEPs[i].Port, (CellValues)i + 1);
                 }
             }
 
