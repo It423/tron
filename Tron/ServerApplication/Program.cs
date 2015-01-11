@@ -105,6 +105,7 @@ namespace ServerApplication
             Console.WriteLine("Your local IP: {0}", LocalIP.ToString());
             Console.WriteLine("Game open on port: {0}\n", Server.Port);
 
+            // Display connected players
             Console.WriteLine("Connected players:");
             for (int i = 0; i < 12; i++)
             {
@@ -118,11 +119,13 @@ namespace ServerApplication
                 }
             }
 
+            // Display command instructions
             Console.WriteLine("\n");
             Console.WriteLine("To start the game (needs two players min) type 'start (wins needed)'\nWins needed must be a whole positive integer between 1 and 30");
             Console.WriteLine("To kick a player type 'kick (player id)'\nPlayer id is next to their ip address.");
-            Console.WriteLine("To close the server type 'close'.\n");
+            Console.WriteLine("To shutdown the server type 'shutdown'.\n");
 
+            // Display current input
             Console.WriteLine(">>> {0}_", Input);
         }
 
