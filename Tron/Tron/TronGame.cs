@@ -6,6 +6,7 @@ using System.Linq;
 using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
 using Tron.CarData;
+using Tron.EventArgs;
 using Tron.Exceptions;
 
 namespace Tron
@@ -41,6 +42,7 @@ namespace Tron
             {
                 this.AddPlayer();
             }
+
             this.Cars = new List<Car>(12);
 
             // Initalize other properties
@@ -58,6 +60,11 @@ namespace Tron
             this.Timer.Enabled = true;
             this.Timer.Start();
         }
+
+        /// <summary>
+        /// Fires when the timer changes.
+        /// </summary>
+        public event EventHandler<TimerChangedEventArgs> TimerChaged;
 
         /// <summary>
         /// Gets or sets the car list. 
@@ -370,6 +377,21 @@ namespace Tron
         protected void HandleTimer(object sender, ElapsedEventArgs e)
         {
             this.DecTimer();
+        }
+
+        /// <summary>
+        /// Fires the timer changed event.
+        /// </summary>
+        /// <param name="origin"> The origin on the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        protected void OnTimerChange(object origin, TimerChangedEventArgs e)
+        {
+            EventHandler<TimerChangedEventArgs> handler = this.TimerChaged;
+
+            if (handler != null)
+            {
+                handler(origin, e);
+            }
         }
     }
 }
