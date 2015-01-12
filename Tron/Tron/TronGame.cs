@@ -344,7 +344,7 @@ namespace Tron
             }
             else
             {
-                // Star the game if the timer reaches 0
+                // Start the game if the timer reaches 0
                 if (this.TimeTillAction == 1)
                 {
                     // Deactivate the timer
