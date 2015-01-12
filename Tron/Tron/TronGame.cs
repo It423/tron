@@ -377,6 +377,8 @@ namespace Tron
         protected void HandleTimer(object sender, ElapsedEventArgs e)
         {
             this.DecTimer();
+
+            this.OnTimerChange(this, new TimerChangedEventArgs(this.TimeTillAction));
         }
 
         /// <summary>
