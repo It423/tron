@@ -163,7 +163,7 @@ namespace Tron
         public static void DrawLeaderboard(int xPos, List<Car> cars, SpriteBatch spriteBatch)
         {
             // Order the cars
-            cars = cars.OrderByDescending(c => c.Victories).ThenByDescending(c => (int)c.Colour).ToList();
+            cars = cars.Where(c => c != null).OrderByDescending(c => c.Victories).ThenByDescending(c => (int)c.Colour).ToList();
 
             // Draw the leaderbored
             int y = 5;
