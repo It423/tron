@@ -71,7 +71,7 @@ namespace Networking
         }
 
         /// <summary>
-        /// Shutsdown the server.
+        /// Shuts down the server.
         /// </summary>
         public void Shutdown()
         {
@@ -251,7 +251,7 @@ namespace Networking
         }
 
         /// <summary>
-        /// Sends the time left to each client whent the timer changes.
+        /// Sends the time left to each client when the timer changes.
         /// </summary>
         /// <param name="origin"> The origin of the event. </param>
         /// <param name="e"> The event arguments. </param>
