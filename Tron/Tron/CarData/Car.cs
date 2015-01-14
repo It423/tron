@@ -1,6 +1,7 @@
 ﻿// Car.cs
 // <copyright file="Car.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using Tron.EventArgs;
 
 namespace Tron.CarData
 {
@@ -30,6 +31,16 @@ namespace Tron.CarData
             this.Alive = true;
             this.Victories = 0;
         }
+
+        /// <summary>
+        /// Fires when the car moves.
+        /// </summary>
+        public event EventHandler<CarMovedEventArgs> CarMoved;
+
+        /// <summary>
+        /// Fires when the car crashes.
+        /// </summary>
+        public event EventHandler<CarMovedEventArgs> CarCrashed;
 
         /// <summary>
         /// Gets or sets the id number.
@@ -117,6 +128,7 @@ namespace Tron.CarData
                 if (this.HasCrashed(grid))
                 {
                     this.Alive = false;
+                    this.OnCarCrash(this, new CarMovedEventArgs(this.ID, this.X, this.Y));
                     return;
                 }
 
@@ -125,11 +137,13 @@ namespace Tron.CarData
 
                 // Move the car now we know it hasn't already crashed
                 this.Move();
+                this.OnCarMove(this, new CarMovedEventArgs(this.ID, this.X, this.Y));
 
                 // Check collision again
                 if (this.HasCrashed(grid))
                 {
                     this.Alive = false;
+                    this.OnCarCrash(this, new CarMovedEventArgs(this.ID, this.X, this.Y));
                 }
 
                 // Move twice if boost is active
@@ -220,6 +234,36 @@ namespace Tron.CarData
             else if (this.Direction == Direction.Left)
             {
                 this.X--;
+            }
+        }
+
+        /// <summary>
+        /// Fires the car moved event.
+        /// </summary>
+        /// <param name="origin"> The origin on the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        protected void OnCarMove(object origin, CarMovedEventArgs e)
+        {
+            EventHandler<CarMovedEventArgs> handler = this.CarMoved;
+
+            if (handler != null)
+            {
+                handler(origin, e);
+            }
+        }
+
+        /// <summary>
+        /// Fires the car crashed event.
+        /// </summary>
+        /// <param name="origin"> The origin on the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        protected void OnCarCrash(object origin, CarMovedEventArgs e)
+        {
+            EventHandler<CarMovedEventArgs> handler = this.CarMoved;
+
+            if (handler != null)
+            {
+                handler(origin, e);
             }
         }
     }
