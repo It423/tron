@@ -40,7 +40,7 @@ namespace Networking
         public IPEndPoint HostEP { get; set; }
 
         /// <summary>
-        /// Gets or sets the thread for listening to incomming transmissions.
+        /// Gets or sets the thread for listening to incoming transmissions.
         /// </summary>
         public Thread ListenThread { get; set; }
 
@@ -198,7 +198,7 @@ namespace Networking
         }
 
         /// <summary>
-        /// Listens for incomming transmissions.
+        /// Listens for incoming transmissions.
         /// </summary>
         public void Listen()
         {
@@ -233,7 +233,7 @@ namespace Networking
         /// Parses a packet sent to the client.
         /// </summary>
         /// <param name="packet"> The packet of data. </param>
-        /// <param name="remoteEP"> The sender's ip end point. </param>
+        /// <param name="remoteEp"> The sender's ip end point. </param>
         public void ParsePacket(byte[] packet, IPEndPoint remoteEp)
         {
             // Make sure its from the server
