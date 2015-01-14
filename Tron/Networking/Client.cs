@@ -24,6 +24,7 @@ namespace Networking
             this.Socket = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
             this.HostEP = new IPEndPoint(IPAddress.Any, 0);
             this.Tron = new TronGame(0, 1);
+            this.Tron.Timer.Stop();
             this.OnlineID = 0;
             this.Connected = false;
         }
@@ -148,23 +149,21 @@ namespace Networking
                     this.Socket.Send(new byte[] { 1 }, 1, hostEp);
 
                     // Initialize the game
-                    this.Tron = new TronGame(0, activePlayers[0]);
-
-                    // Initialize the players list without the score limit
-                    List<byte> activePlayerList = activePlayers.ToList();
-                    activePlayerList.RemoveAt(0);
+                    this.Tron = new TronGame(0, 1);
+                    this.Tron.Timer.Stop();
+                    this.Tron.Action = string.Empty;
 
                     // Initialize the players
-                    this.Tron.Players = activePlayerList.Count + 1;
+                    this.Tron.Players = activePlayers.Length + 1;
                     for (byte i = 0; i < 12; i++)
                     {
-                        if (activePlayerList.Contains(i) || i == newId[0])
+                        if (activePlayers.Contains(i) || i == newId[0])
                         {
-                            this.Tron.Cars.Add(new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i));
+                            this.Tron.Cars[i] = new Car(i, SpawnLists.XPositions[i], SpawnLists.YPositions[i], SpawnLists.Directions[i], (CellValues)i + 1);
                         }
                         else
                         {
-                            this.Tron.Cars.Add(null);
+                            this.Tron.Cars[i] = null;
                         }
                     }
 
@@ -258,6 +257,25 @@ namespace Networking
                         // Remove car
                         this.Tron.RemovePlayer(packet[0]);
                     }
+                }
+                else if (packet.Length == 14)
+                {
+                    // New timer and scores message
+                    // Parse scores
+                    for (int i = 0; i < 12; i++)
+                    {
+                        if (this.Tron.Cars[i] != null)
+                        {
+                            this.Tron.Cars[i].Victories = packet[i + 2];
+                        }
+                    }
+
+                    // Parse time and rounds to win
+                    this.Tron.DecTimer();
+                    this.Tron.Timer.Stop();
+                    this.Tron.TimeTillAction = packet[0];
+                    this.Tron.ResetGame(this.Tron.GameWon);
+                    this.Tron.PointsToWin = packet[1];
                 }
             }
         }

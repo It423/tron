@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using Tron;
 using Tron.CarData;
+using Tron.EventArgs;
 
 namespace Networking
 {
@@ -36,6 +37,7 @@ namespace Networking
                 this.ClientEPs.Add(null);
             }
 
+            // Initalize game
             this.Tron = new TronGame(0, 1);
         }
 
@@ -195,7 +197,6 @@ namespace Networking
                     .Where(ep => ep != null)                            // Get players that arn't null
                     .Select(ep => (byte)this.ClientEPs.IndexOf(ep))     // Turn them into their indexes
                     .ToList();                                          // Turn to list
-                activePlayers.Insert(0, (byte)this.Tron.PointsToWin);   // Add the points to win
                     
                 // Send this to the connecting client and send next set if acknowledgement is received
                 this.Socket.Send(activePlayers.ToArray(), activePlayers.Count, remoteEP);
@@ -247,6 +248,35 @@ namespace Networking
                 // Tell other players to remove this player
                 this.SendToAll(new byte[] { (byte)id, 255 });
             }
+        }
+
+        /// <summary>
+        /// Sends the time left to each client whent the timer changes.
+        /// </summary>
+        /// <param name="origin"> The origin of the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public void SendTimeLeft(object origin, TimerChangedEventArgs e)
+        {
+            // Get the time left and points to win
+            byte[] packet = new byte[14];
+            packet[0] = (byte)e.TimeLeft;
+            packet[1] = (byte)this.Tron.PointsToWin;
+
+            // Get the scores
+            for (int i = 0; i < 12; i++)
+            {
+                if (this.Tron.Cars[i] == null)
+                {
+                    packet[i + 2] = 0;
+                }
+                else
+                {
+                    packet[i + 2] = (byte)this.Tron.Cars[i].Victories;
+                }
+            }
+
+            // Send data
+            this.SendToAll(packet);
         }
 
         /// <summary>
