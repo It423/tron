@@ -1,6 +1,7 @@
 ﻿// GameData.cs
 // <copyright file="GameData.cs"> This code is protected under the MIT License. </copyright>
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Networking;
 using Tron;
@@ -125,7 +126,7 @@ namespace Application
             {
                 // Draw the player's HUD and the leaderboard
                 Drawing.DrawHUD(LocalHUDXPos[0], Client.Tron.Cars[Client.OnlineID], spriteBatch);
-                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(Client.Tron.Cars.Count - 1) / 4))), Client.Tron.Cars, spriteBatch);
+                Drawing.DrawLeaderboard((int)(840 - (170 * Math.Truncate((decimal)(Client.Tron.Cars.Where(c => c != null).Count() - 1) / 4))), Client.Tron.Cars, spriteBatch);
             }
 
             spriteBatch.End();

@@ -43,7 +43,7 @@ namespace Tron
                 this.AddPlayer();
             }
 
-            this.Cars = new List<Car>(12);
+            this.Cars = new List<Car>() { null, null, null, null, null, null, null, null, null, null, null, null };
 
             // Initalize other properties
             this.RoundFinished = true;
@@ -282,7 +282,7 @@ namespace Tron
                 Car winner = null;
                 try
                 {
-                    winner = this.Cars.Where(c => c.Alive).ToList()[0];
+                    winner = this.Cars.Where(c => c != null && c.Alive).ToList()[0];
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -302,7 +302,7 @@ namespace Tron
         public void CheckRoundOver()
         {
             // Check if the round has finished
-            List<Car> aliveCars = this.Cars.Where(c => c.Alive).ToList();
+            List<Car> aliveCars = this.Cars.Where(c => c != null && c.Alive).ToList();
             if (aliveCars.Count <= 1)
             {
                 this.RoundFinished = true;

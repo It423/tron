@@ -30,6 +30,11 @@ namespace ServerApplication
         public static IPAddress LocalIP { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the game has started.
+        /// </summary>
+        public static bool GameStarted { get; set; }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// <param name="args"> Any arguments/commands that the program is run/compiled with. </param>
@@ -41,6 +46,7 @@ namespace ServerApplication
             // Initalize server
             Server = new Server();
             Server.Start();
+            GameStarted = false;
 
             // Get local ip
             LocalIP = GetLocalIP();
@@ -140,9 +146,12 @@ namespace ServerApplication
 
             try
             {
-                if (Input.ToLower().Substring(0, 6) == "start " && int.TryParse(Input.Substring(6), out parsedInt) && parsedInt > 0 && parsedInt <= 30)
+                if (Input.ToLower().Substring(0, 6) == "start " && int.TryParse(Input.Substring(6), out parsedInt) && parsedInt > 0 && parsedInt <= 30 && !GameStarted)
                 {
                     // Start the game
+                    Server.Tron = new TronGame(Server.Tron.Players, parsedInt);
+                    Server.Tron.TimerChaged += Server.SendTimeLeft;
+                    GameStarted = true;
                 }
                 else if (Input.ToLower().Substring(0, 5) == "kick " && int.TryParse(Input.Substring(5), out parsedInt) && parsedInt <= 12 && parsedInt >= 1)
                 {

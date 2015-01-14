@@ -217,7 +217,13 @@ namespace Application
                                 Console.WriteLine("Disconnected!");
                                 break;
                             }
-                            // Game started if statement
+                            else if (GameData.Client.Tron.Action != string.Empty)
+                            {
+                                // Start game
+                                GameData.LocalMultiPlayer = false;
+                                StartGame();
+                                break;
+                            }
                         }
 
                         break;

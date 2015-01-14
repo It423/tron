@@ -65,6 +65,7 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Drawing.cs" />
+    <Compile Include="EventArgs\TimerChangedEventArgs.cs" />
     <Compile Include="Exceptions\TooManyPlayersException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

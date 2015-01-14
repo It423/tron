@@ -106,13 +106,16 @@ namespace Application
             }
             else
             {
-                GameData.Client.Tron.CheckRoundOver();
+                // Check if the round is over
+                if (!GameData.Client.Tron.RoundFinished)
+                {
+                    GameData.Client.Tron.CheckRoundOver();
+                }
 
                 // Check if the player has been kicked
                 if (!GameData.Client.Connected)
                 {
                     this.Exit();
-                    Console.WriteLine("You have been disconnected from the server.");
                 }
             }
 
@@ -257,10 +260,36 @@ namespace Application
         {
             GraphicsDevice.Clear(Drawing.GetColour(CellValues.None));
 
-            GameData.Tron.Draw(SpriteBatch);
+            if (GameData.LocalMultiPlayer)
+            {
+                GameData.Tron.Draw(SpriteBatch);
+            }
+            else
+            {
+                GameData.Client.Tron.Draw(SpriteBatch);
+            }
+
             GameData.DrawPlayerHUD(SpriteBatch);
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Runs when exiting the game.
+        /// </summary>
+        /// <param name="sender"> What raised the event. </param>
+        /// <param name="args"> The event arguments. </param>
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            // Disconnect the client
+            if (!GameData.LocalMultiPlayer && GameData.Client.Connected)
+            {
+                GameData.Client.Disconnect(false);
+            }
+
+            Console.WriteLine("\nYou have been disconnected from the server.");
+
+            base.OnExiting(sender, args);
         }
     }
 }
