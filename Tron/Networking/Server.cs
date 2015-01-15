@@ -257,6 +257,24 @@ namespace Networking
         /// <param name="e"> The event arguments. </param>
         public void SendTimeLeft(object origin, TimerChangedEventArgs e)
         {
+            // Apply to move and crash event handlers if time is 0
+            if (e.TimeLeft == 0)
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    if (this.Tron.Cars[i] != null)
+                    {
+                        // Unsubscribe to events
+                        this.Tron.Cars[i].CarMoved -= this.SendCarMove;
+                        this.Tron.Cars[i].CarCrashed -= this.SendCarMove;
+
+                        // Resubscribe to events
+                        this.Tron.Cars[i].CarMoved += this.SendCarMove;
+                        this.Tron.Cars[i].CarCrashed += this.SendCarMove;
+                    }
+                }
+            }
+
             // Get the time left and points to win
             byte[] packet = new byte[14];
             packet[0] = (byte)e.TimeLeft;
@@ -276,6 +294,44 @@ namespace Networking
             }
 
             // Send data
+            this.SendToAll(packet);
+        }
+
+        /// <summary>
+        /// Sends a car's move to each client.
+        /// </summary>
+        /// <param name="origin"> The origin of the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public void SendCarMove(object origin, CarMovedEventArgs e)
+        {
+            // Get the id and y position
+            byte[] packet = new byte[5];
+            packet[0] = (byte)e.ID;
+            packet[3] = (byte)e.Y;
+
+            // Get the x position
+            if (e.X > 255)
+            {
+                packet[1] = 255;
+                packet[2] = (byte)(e.X - 255);
+            }
+            else
+            {
+                packet[1] = (byte)e.X;
+                packet[2] = 0;
+            }
+
+            // Get whether the car is dead or not
+            if (this.Tron.Cars[e.ID].Alive)
+            {
+                packet[4] = 100;
+            }
+            else
+            {
+                packet[4] = 0;
+            }
+
+            // Send the packet
             this.SendToAll(packet);
         }
 

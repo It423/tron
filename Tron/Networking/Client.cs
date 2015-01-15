@@ -277,6 +277,29 @@ namespace Networking
                     this.Tron.ResetGame(this.Tron.GameWon);
                     this.Tron.PointsToWin = packet[1];
                 }
+                else if (packet.Length == 5)
+                {
+                    // Car move/crash
+                    // Store previous position
+                    try
+                    {
+                        this.Tron.Grid[this.Tron.Cars[packet[0]].X][this.Tron.Cars[packet[0]].Y] = this.Tron.Cars[packet[0]].Colour;
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        // Catch exceptions with player driving off screen
+                    }
+
+                    // Set correct position
+                    this.Tron.Cars[packet[0]].X = packet[1] + packet[2];
+                    this.Tron.Cars[packet[0]].Y = packet[3];
+
+                    // Make the car dead if told so
+                    if (packet[4] == 0)
+                    {
+                        this.Tron.Cars[packet[0]].Alive = false;
+                    }
+                }
             }
         }
 
