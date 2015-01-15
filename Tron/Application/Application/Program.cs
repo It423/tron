@@ -14,19 +14,13 @@ namespace Application
     public static class Program
     {
         /// <summary>
-        /// Gets or sets the game application.
-        /// </summary>
-        public static Game Game { get; set; }
-
-        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// <param name="args"> Any arguments/commands that the program is run/compiled with. </param>
         public static void Main(string[] args)
         {
             Console.Title = "Tron";
-            GameData.Client = new Client();
-            GameData.Tron = new TronGame(0, 3);
+            GameData.Tron = new TronGame(0, 1);
             Help();
             GetCommand();
         }
@@ -128,6 +122,7 @@ namespace Application
             }   
 
             // Setup the game data
+            GameData.Client = null;
             GameData.LocalMultiPlayer = true;
             GameData.LocalPlayers = players;
             GameData.Tron = new TronGame(players, pointsToWin);
@@ -184,6 +179,7 @@ namespace Application
                 {
                     // Connect to server
                     Console.WriteLine("Connecting... ");
+                    GameData.Client = new Client();
                     bool? connected = GameData.Client.Connect(inputtedIp);
 
                     // Write message
@@ -222,6 +218,7 @@ namespace Application
                                 // Start game
                                 GameData.LocalMultiPlayer = false;
                                 StartGame();
+                                Console.WriteLine("\nDisconnected Safely!");
                                 break;
                             }
                         }
@@ -285,13 +282,10 @@ namespace Application
         /// </summary>
         public static void StartGame()
         {
-            using (Game = new Game())
+            using (Game game = new Game())
             {
-                Game.Run();
+                game.Run();
             }
-
-            // Make game null so we know its not open
-            Game = null;
         }
     }
 #endif

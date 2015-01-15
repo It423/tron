@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Timers;
 using Networking;
 using Tron;
 
@@ -18,6 +19,11 @@ namespace ServerApplication
         /// Gets or sets the instance of the server.
         /// </summary>
         public static Server Server { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timer to keep the game updating at a correct rate.
+        /// </summary>
+        public static System.Timers.Timer Timer { get; set; }
 
         /// <summary>
         /// Gets or sets the string the user has inputted.
@@ -47,6 +53,13 @@ namespace ServerApplication
             Server = new Server();
             Server.Start();
             GameStarted = false;
+            
+            // Initalize the timer
+            Timer = new System.Timers.Timer(1000 / 50);
+            Timer.AutoReset = true;
+            Timer.Enabled = true;
+            Timer.Elapsed += HandleTimerElapse;
+            Timer.Start();
 
             // Get local ip
             LocalIP = GetLocalIP();
@@ -101,7 +114,7 @@ namespace ServerApplication
         public static void DisplayUI()
         {
             // Set window height to incude everything
-            Console.WindowHeight = 28;
+            Console.WindowHeight = 30;
 
             // Clear the console and wait to avoid display issues
             Thread.Sleep(50);
@@ -110,6 +123,14 @@ namespace ServerApplication
             Console.WriteLine("Tron server:");
             Console.WriteLine("Your local IP: {0}", LocalIP.ToString());
             Console.WriteLine("Game open on port: {0}\n", Server.Port);
+
+            string active = "active";
+            if (!GameStarted)
+            {
+                active = "not active";
+            }
+
+            Console.WriteLine("The game is currently: {0}\n", active);
 
             // Display connected players
             Console.WriteLine("Connected players:");
@@ -146,10 +167,12 @@ namespace ServerApplication
 
             try
             {
-                if (Input.ToLower().Substring(0, 6) == "start " && int.TryParse(Input.Substring(6), out parsedInt) && parsedInt > 0 && parsedInt <= 30 && !GameStarted)
+                if (Input.ToLower().Substring(0, 6) == "start " && int.TryParse(Input.Substring(6), out parsedInt) && parsedInt > 0 && parsedInt <= 30 && !GameStarted && Server.Tron.Players >= 2)
                 {
                     // Start the game
                     Server.Tron = new TronGame(Server.Tron.Players, parsedInt);
+                    Server.Tron.ResetGame(true);
+                    Server.Tron.TimeTillAction = 6;
                     Server.Tron.TimerChaged += Server.SendTimeLeft;
                     GameStarted = true;
                 }
@@ -162,6 +185,30 @@ namespace ServerApplication
             catch (ArgumentOutOfRangeException)
             {
                 // Catch errors with message too small to run Input.Substring
+            }
+        }
+
+        /// <summary>
+        /// Handles the game refresh timer elapsing
+        /// </summary>
+        /// <param name="sender"> The origin of the event. </param>
+        /// <param name="e"> The event arguments. </param>
+        public static void HandleTimerElapse(object sender, ElapsedEventArgs e)
+        {
+            if (GameStarted)
+            {
+                Server.Tron.Update();
+
+                // Stop game if there is only one player
+                if (Server.Tron.Players < 2)
+                {
+                    for (int i = 0; i < 12; i++)
+                    {
+                        Server.RemovePlayer(i, true);
+                    }
+
+                    GameStarted = false;
+                }
             }
         }
 

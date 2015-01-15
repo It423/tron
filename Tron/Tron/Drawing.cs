@@ -130,28 +130,31 @@ namespace Tron
         /// <param name="spriteBatch"> The sprite batch drawing tool. </param>
         public static void DrawHUD(int xPos, Car c, SpriteBatch spriteBatch)
         {
-            // Get the width of the area
-            int boostWidth = (3 * BoostTexture.Width) + 30;
-
-            if (c.Alive)
+            if (c != null)
             {
-                // Display how many boosts the player has left
-                spriteBatch.DrawString(HUDFont, "Boosts:", new Vector2(((boostWidth - HUDFont.MeasureString("Boosts:").X) / 2) + xPos, 10), GetColour(c.Colour));
+                // Get the width of the area
+                int boostWidth = (3 * BoostTexture.Width) + 30;
 
-                int x = xPos;
-                for (int i = 0; i < c.BoostsRemeaning; i++, x += BoostTexture.Width + 15)
+                if (c.Alive)
                 {
-                    spriteBatch.Draw(BoostTexture, new Vector2(x, 45), GetColour(c.Colour));
-                }
-            }
-            else
-            {
-                // Display the player is dead
-                spriteBatch.DrawString(DeadFont, "DEAD", new Vector2(((boostWidth - DeadFont.MeasureString("DEAD").X) / 2) + xPos, 0), GetColour(c.Colour));
-            }
+                    // Display how many boosts the player has left
+                    spriteBatch.DrawString(HUDFont, "Boosts:", new Vector2(((boostWidth - HUDFont.MeasureString("Boosts:").X) / 2) + xPos, 10), GetColour(c.Colour));
 
-            // Show how many victories the player has
-            spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2(((boostWidth - HUDFont.MeasureString(string.Format("Victories: {0}", c.Victories)).X) / 2) + xPos, 70), GetColour(c.Colour));
+                    int x = xPos;
+                    for (int i = 0; i < c.BoostsRemeaning; i++, x += BoostTexture.Width + 15)
+                    {
+                        spriteBatch.Draw(BoostTexture, new Vector2(x, 45), GetColour(c.Colour));
+                    }
+                }
+                else
+                {
+                    // Display the player is dead
+                    spriteBatch.DrawString(DeadFont, "DEAD", new Vector2(((boostWidth - DeadFont.MeasureString("DEAD").X) / 2) + xPos, 0), GetColour(c.Colour));
+                }
+
+                // Show how many victories the player has
+                spriteBatch.DrawString(HUDFont, string.Format("Victories: {0}", c.Victories), new Vector2(((boostWidth - HUDFont.MeasureString(string.Format("Victories: {0}", c.Victories)).X) / 2) + xPos, 70), GetColour(c.Colour));
+            }
         }
 
         /// <summary>

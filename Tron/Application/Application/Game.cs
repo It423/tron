@@ -93,12 +93,6 @@ namespace Application
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-            {
-                this.Exit();
-            }
-
             // Update game
             if (GameData.LocalMultiPlayer)
             {
@@ -115,6 +109,7 @@ namespace Application
                 // Check if the player has been kicked
                 if (!GameData.Client.Connected)
                 {
+                    Console.WriteLine("\nYou have been disconnected from the server.");
                     this.Exit();
                 }
             }
@@ -286,8 +281,6 @@ namespace Application
             {
                 GameData.Client.Disconnect(false);
             }
-
-            Console.WriteLine("\nYou have been disconnected from the server.");
 
             base.OnExiting(sender, args);
         }
