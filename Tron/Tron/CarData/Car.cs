@@ -60,23 +60,23 @@ namespace Tron.CarData
         /// <summary>
         /// Gets or sets the direction the car is moving in.
         /// </summary>
-        public Direction Direction { get; protected set; }
+        public Direction Direction { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the car is boosting.
         /// </summary>
-        public bool IsBoosting { get; protected set; }
+        public bool IsBoosting { get; set; }
 
         /// <summary>
         /// Gets or sets how many boosts the car has left.
         /// </summary>
-        public int BoostsRemeaning { get; protected set; }
+        public int BoostsRemeaning { get; set; }
 
         /// <summary>
         /// Gets or sets the colour value.
         /// </summary>
         /// <remarks> Uses the <see cref="CellValues" /> enumeration as it contains all the colours. </remarks>
-        public CellValues Colour { get; protected set; }
+        public CellValues Colour { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the car has crashed.
@@ -259,7 +259,7 @@ namespace Tron.CarData
         /// <param name="e"> The event arguments. </param>
         protected void OnCarCrash(object origin, CarMovedEventArgs e)
         {
-            EventHandler<CarMovedEventArgs> handler = this.CarMoved;
+            EventHandler<CarMovedEventArgs> handler = this.CarCrashed;
 
             if (handler != null)
             {
