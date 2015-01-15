@@ -299,6 +299,11 @@ namespace Networking
                     {
                         this.Tron.Cars[packet[0]].Alive = false;
                     }
+                    else
+                    {
+                        // Set the boosts remaining
+                        this.Tron.Cars[packet[0]].BoostsRemeaning = packet[4] - 1;
+                    }
                 }
             }
         }

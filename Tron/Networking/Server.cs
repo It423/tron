@@ -324,7 +324,7 @@ namespace Networking
             // Get whether the car is dead or not
             if (this.Tron.Cars[e.ID].Alive)
             {
-                packet[4] = 100;
+                packet[4] = (byte)(1 + this.Tron.Cars[e.ID].BoostsRemeaning);
             }
             else
             {
