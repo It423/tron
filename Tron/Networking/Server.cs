@@ -222,7 +222,7 @@ namespace Networking
             List<IPEndPoint> eps = this.ClientEPs.Where(ep => ep != null).ToList();
             
             // Send the message to all clients
-            eps.ForEach(ep => new Thread(() => this.Socket.Send(packet, packet.Length, ep)).Start());
+            eps.ForEach(ep => new Thread(() => new UdpClient(new IPEndPoint(IPAddress.Any, 0)).Send(packet, packet.Length, ep)).Start());
         }
 
         /// <summary>

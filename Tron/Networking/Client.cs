@@ -190,11 +190,12 @@ namespace Networking
             }
 
             // Disconnect
+            this.Connected = false;
             this.HostEP = new IPEndPoint(IPAddress.Any, 0);
             this.Socket.Close();
             this.Tron = new TronGame(0, 1);
+            this.Tron.Action = string.Empty;
             this.OnlineID = 0;
-            this.Connected = false;
         }
 
         /// <summary>
@@ -237,7 +238,7 @@ namespace Networking
         public void ParsePacket(byte[] packet, IPEndPoint remoteEp)
         {
             // Make sure its from the server
-            if (remoteEp.Equals(this.HostEP))
+            if (remoteEp.Address.Equals(this.HostEP.Address))
             {
                 // Check if its a kick, add or remove message
                 if (packet.Length == 2)

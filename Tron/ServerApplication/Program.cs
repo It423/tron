@@ -49,6 +49,8 @@ namespace ServerApplication
             // Add a shutdown hook to shutdown the server
             AppDomain.CurrentDomain.ProcessExit += (s, e) => { Server.Shutdown(); };
 
+            Console.Title = "Tron Server";
+
             // Initalize server
             Server = new Server();
             Server.Start();
